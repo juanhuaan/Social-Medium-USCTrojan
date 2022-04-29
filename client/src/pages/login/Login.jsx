@@ -2,7 +2,7 @@ import { useContext, useRef } from "react";
 import "./login.css";
 import { loginCall } from "../../apiCalls";
 import { AuthContext } from "../../context/AuthContext";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, Link, Grid } from "@material-ui/core";
 
 export default function Login() {
   const email = useRef();
@@ -50,14 +50,18 @@ export default function Login() {
                 "Log In"
               )}
             </button>
-            <span className="loginForgot">Forgot Password?</span>
-            <button className="loginRegisterButton">
-              {isFetching ? (
-                <CircularProgress color="white" size="20px" />
-              ) : (
-                "Create a New Account"
-              )}
-            </button>
+            <Grid container>
+              <Grid item xs>
+              <Link href="/register">
+            Forget password?
+          </Link>
+              </Grid>
+              <Grid item>
+              <Link href="/register">
+            Create a New Account
+          </Link>
+              </Grid>
+            </Grid>
           </form>
         </div>
       </div>

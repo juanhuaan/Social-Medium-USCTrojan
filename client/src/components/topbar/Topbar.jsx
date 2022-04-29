@@ -3,15 +3,26 @@ import { Search, Person, Chat, Notifications } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
 
 export default function Topbar() {
-  const { user } = useContext(AuthContext);
+  const { user, dispatch } = useContext(AuthContext);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const logoutHandler = async () => {
+    console.log(user)
+    dispatch({ type: "LOG_OUT" })
+    console.log(user)
+    try {
+      await axios.get("/");
+    } catch (err) {console.log(err)}
+    
+  };
+
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">Lamasocial</span>
+          <span className="logo">Trojan Familly</span>
         </Link>
       </div>
       <div className="topbarCenter">
@@ -27,6 +38,7 @@ export default function Topbar() {
         <div className="topbarLinks">
           <span className="topbarLink">Homepage</span>
           <span className="topbarLink">Timeline</span>
+          <span className="topbarLink" onClick={logoutHandler}>Log Out</span>
         </div>
         <div className="topbarIcons">
           <div className="topbarIconItem">

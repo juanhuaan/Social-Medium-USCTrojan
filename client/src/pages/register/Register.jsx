@@ -2,6 +2,7 @@ import axios from "axios";
 import { useRef } from "react";
 import "./register.css";
 import { useHistory } from "react-router";
+import { Link, Grid } from "@material-ui/core";
 
 export default function Register() {
   const username = useRef();
@@ -71,7 +72,18 @@ export default function Register() {
             <button className="loginButton" type="submit">
               Sign Up
             </button>
-            <button className="loginRegisterButton">Log into Account</button>
+
+            <Grid
+              container
+              spacing={0}
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
+            >
+            <Link href='/login'>
+            Log into Account
+            </Link>
+            </Grid> 
           </form>
         </div>
       </div>
