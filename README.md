@@ -20,3 +20,14 @@ MONGO_URL = mongodb+srv://ee547:XGhH1KuAj1c00ooB@cluster0.knprx.mongodb.net/EE54
   - components
     - topbar/Topbar.jsx
   - App.js
+
+2. change Post schema, add two api update a post and comment a post
+    related files:
+
+- server
+  - models
+    - Post.js
+  - routes
+    - posts.js
+
+

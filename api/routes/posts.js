@@ -100,3 +100,33 @@ router.get("/profile/:username", async (req, res) => {
 });
 
 module.exports = router;
+// update a post
+router.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId, desc, img, likes, comments, tags } = req.body;
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
+    const updatedPost = { userId, desc, img, likes, comments, tags };
+    await Post.findByIdAndUpdate(id, updatedPost, { new: true });
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// comment a post
+router.post('/:id/commentPost', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { value } = req.body;
+    const post = await Post.findById(id);
+    console.log(post);
+    post.comments.push(value);
+    const updated = await Post.findByIdAndUpdate(id, post, { new: true });
+    res.status(200).json(updated);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json(err);
+  }
+});
