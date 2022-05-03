@@ -29,11 +29,18 @@ export default function Post({ post }) {
     fetchUser();
   }, [post.userId]);
 
-  const deleteHandler = () => {
+
+
+  const deleteHandler = async() => {
     try {
-      axios.delete("/posts/" + post._id, { data: { userId: currentUser._id } });
+      await axios.delete("/posts/" + post._id, { data: { userId: currentUser._id } });
+      window.location.reload()
     } catch (err) { console.error(err) }
   }
+ 
+
+ 
+
   const likeHandler = () => {
     try {
       axios.put("/posts/" + post._id + "/like", { userId: currentUser._id });
@@ -61,9 +68,12 @@ export default function Post({ post }) {
             <span className="postDate">{format(post.createdAt)}</span>
           </div>
           <div className="postTopRight">
-            <Button size="small" color="secondary" onClick={deleteHandler}>
-              <DeleteIcon fontSize="small" /> &nbsp; Delete
+          
+            <Button size="small" color="primary" onClick={deleteHandler}>
+              <DeleteIcon fontSize="small" /> &nbsp;  Delete
+              
             </Button>
+            
           </div>
         </div>
         <div className="postCenter">
