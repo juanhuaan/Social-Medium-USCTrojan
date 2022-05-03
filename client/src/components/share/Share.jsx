@@ -31,12 +31,14 @@ export default function Share() {
       console.log(newPost);
       try {
         await axios.post("/upload", data);
-      } catch (err) {}
+      } catch (err) { }
     }
     try {
       await axios.post("/posts", newPost);
       window.location.reload();
-    } catch (err) {}
+      // 1. Notify Feed to refresh
+      // 2. Motify User model to re-fetch data from server
+    } catch (err) { }
   };
 
   return (
