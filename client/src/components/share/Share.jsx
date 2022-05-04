@@ -63,14 +63,11 @@ export default function Share() {
             alt=""
           />
          <form className="shareForm">
-         
-         
          <input
             placeholder={ "Hi " +  user.username + ", what's happening?" }
             className="shareInput"
             ref={desc}
           /> 
-          
           <div className="shareOption">
               <Label htmlColor="#CD5C5C" className="shareIcon" />
               <input
@@ -90,7 +87,6 @@ export default function Share() {
             <Cancel className="shareCancelImg" onClick={() => setFile(null)} />
           </div>
         )}
-
         <form className="shareBottom" onSubmit={submitHandler}>
           <div className="shareOptions">
             <label htmlFor="file" className="shareOption">
