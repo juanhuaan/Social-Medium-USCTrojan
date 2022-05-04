@@ -22,7 +22,7 @@ export default function Share() {
     e.preventDefault();
     let tagsArr = [];
     tagsArr = tags.current.value.split(",");
-    let newArr = tagsArr.map(val => val.toLowerCase().replace(/\s/g, ''))
+    let newArr = tagsArr.map(val => val.toLowerCase().trim())
     const newPost = {
       userId: user._id,
       desc: desc.current.value,
