@@ -92,6 +92,7 @@ export default function Post({ post }) {
         <Label htmlColor="#CD5C5C" className="postIcon" /> 
           <span className="postText" fontSize = "60%" > {formatting(post?.tags)}</span>
         </div>}
+        <hr className="shareHr" />
         <div className="postBottom">
           <div className="postBottomLeft">
             <img
