@@ -6,7 +6,7 @@ import {
   EmojiEmotions,
   Cancel,
 } from "@material-ui/icons";
-
+import { Link } from "react-router-dom";
 import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
@@ -53,6 +53,7 @@ export default function Share() {
     <div className="share">
       <div className="shareWrapper">
         <div className="shareTop">
+        <Link to={`/profile/${user.username}`}>
           <img
             className="shareProfileImg"
             src={
@@ -62,6 +63,7 @@ export default function Share() {
             }
             alt=""
           />
+          </Link>
           <form className="shareForm">
             <input
               placeholder={"Hi " + user.username + ", what's happening?"}

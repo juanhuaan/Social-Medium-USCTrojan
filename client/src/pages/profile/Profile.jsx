@@ -14,6 +14,7 @@ export default function Profile() {
   const [profilePicture, setprofilePicture] = useState(null);
   const [coverPicture, setcoverPicture] = useState(null);
   const username = useParams().username;
+  const [profile, setProfile] = useState(true);
 
   console.log('coverPicture', coverPicture)
 
@@ -119,7 +120,7 @@ export default function Profile() {
             </div>
           </div>
           <div className="profileRightBottom">
-            <Feed username={username} />
+            <Feed username={username} profile={profile} />
             <Rightbar user={user} />
           </div>
         </div>
