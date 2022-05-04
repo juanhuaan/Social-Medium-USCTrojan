@@ -76,7 +76,7 @@ export default function Profile() {
         <div className="profileRight">
           <div className="profileRightTop">
             <div className="profileCover">
-              <label htmlFor="file" className="shareOption">
+              <label htmlFor="cover" className="changePicture">
                 <img
                   className="profileCoverImg"
                   src={
@@ -86,15 +86,15 @@ export default function Profile() {
                   }
                   alt=""
                 />
-                {/* <input
+                <input
                   style={{ display: "none" }}
                   type="file"
-                  id="file"
+                  id="cover"
                   accept=".png,.jpeg,.jpg"
-                onChange={(e) => { setcoverPicture(e.target.files[0]) }}
-                /> */}
+                  onChange={(e) => { setcoverPicture(e.target.files[0]) }}
+                />
               </label>
-              <label htmlFor="file" className="shareOption">
+              <label htmlFor="profile" className="changePicture">
                 <img
                   className="profileUserImg"
                   src={
@@ -107,7 +107,7 @@ export default function Profile() {
                 <input
                   style={{ display: "none" }}
                   type="file"
-                  id="file"
+                  id="profile"
                   accept=".png,.jpeg,.jpg"
                   onChange={(e) => { setprofilePicture(e.target.files[0]) }}
                 />

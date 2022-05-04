@@ -9,8 +9,8 @@ export default function Feed({ username, searchTag }) {
   const [posts, setPosts] = useState([]);
   const { user } = useContext(AuthContext);
 
-  console.log('Feed username', username)
-  console.log('Feed searchTag', searchTag)
+  // console.log('Feed username', username)
+  // console.log('Feed searchTag', searchTag)
   useEffect(() => {
     const fetchPosts = async () => {
       const res = username
@@ -31,16 +31,20 @@ export default function Feed({ username, searchTag }) {
     const fetchPosts = async () => {
       const res = await axios.get("/posts/timeline/" + user._id);
       // : await axios.get("/posts/homepage/" + user._id);
+      let allPosts = res.data;
+      if (!!searchTag) {
+        allPosts = allPosts.filter(p => p.tags.includes(searchTag) || p.desc.includes(searchTag));
+      }
       setPosts(
-        res.data.filter(p => p.tags.includes(searchTag) || p.desc.includes(searchTag)).sort((p1, p2) => {
+        allPosts.sort((p1, p2) => {
           return new Date(p2.createdAt) - new Date(p1.createdAt);
         })
       );
     };
-    if (!!searchTag) {
+    if (!!user) {
       fetchPosts();
     }
-    console.log('change searchTag', searchTag)
+    // console.log('change searchTag', searchTag)
   }, [searchTag]);
 
   return (
