@@ -1,11 +1,11 @@
 import "./topbar.css";
 import { Search, Person, Chat, Notifications } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 
-export default function Topbar() {
+export default function Topbar({ setSearchTag }) {
   const { user, dispatch } = useContext(AuthContext);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
@@ -15,10 +15,10 @@ export default function Topbar() {
     console.log(user)
     try {
       await axios.get("/");
-    } catch (err) {console.log(err)}  
+    } catch (err) { console.log(err) }
   };
 
- 
+
 
   return (
     <div className="topbarContainer">
@@ -33,11 +33,12 @@ export default function Topbar() {
           <input
             placeholder="Try searching for people, topics, or keywords"
             className="searchInput"
+            onChange={(e) => { setSearchTag(e.target.value) }}
           />
         </div>
       </div>
       <div className="topbarRight">
-        <div className="topbarLinks">   
+        <div className="topbarLinks">
           <span className="topbarLink" >Homepage</span>
           <span className="topbarLink" >Timeline</span>
           <span className="topbarLink" onClick={logoutHandler}>Log Out</span>
