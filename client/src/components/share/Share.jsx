@@ -6,6 +6,7 @@ import {
   EmojiEmotions,
   Cancel,
 } from "@material-ui/icons";
+
 import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
@@ -62,15 +63,18 @@ export default function Share() {
             alt=""
           />
          <form className="shareForm">
+         
+         
          <input
-            placeholder={"Hi " +  user.username + ", what's happening?"}
+            placeholder={ "Hi " +  user.username + ", what's happening?" }
             className="shareInput"
             ref={desc}
           /> 
+          
           <div className="shareOption">
               <Label htmlColor="#CD5C5C" className="shareIcon" />
               <input
-                placeholder={"# tags: weather, mood, study, travel, cat, ..."}
+                placeholder={"# tags (comma is a must): weather, mood, study, travel, cat, ..."}
                 type="text"
                 className="tagInput"
                 ref={tags}
