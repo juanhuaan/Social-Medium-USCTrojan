@@ -7,9 +7,7 @@ import { useState, useEffect } from "react";
 
 export default function Home() {
   const [searchTag, setSearchTag] = useState(null);
-  useEffect(() => {
-    console.log('tag: ', searchTag)
-  }, [searchTag]);
+
   return (
     <>
       <Topbar setSearchTag={setSearchTag} />

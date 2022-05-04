@@ -6,6 +6,11 @@
     flex: 9;
 }
 
+.changePicture:hover{
+    opacity: 0.5;
+    cursor: pointer;
+}
+
 .profileCover{
     height: 320px;
     position: relative;
