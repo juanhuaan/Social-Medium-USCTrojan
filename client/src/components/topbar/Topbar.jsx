@@ -8,15 +8,17 @@ import axios from "axios";
 export default function Topbar() {
   const { user, dispatch } = useContext(AuthContext);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
   const logoutHandler = async () => {
     console.log(user)
     dispatch({ type: "LOG_OUT" })
     console.log(user)
     try {
       await axios.get("/");
-    } catch (err) {console.log(err)}
-    
+    } catch (err) {console.log(err)}  
   };
+
+ 
 
   return (
     <div className="topbarContainer">
@@ -35,9 +37,9 @@ export default function Topbar() {
         </div>
       </div>
       <div className="topbarRight">
-        <div className="topbarLinks">
-          <span className="topbarLink">Homepage</span>
-          <span className="topbarLink">Timeline</span>
+        <div className="topbarLinks">   
+          <span className="topbarLink" >Homepage</span>
+          <span className="topbarLink" >Timeline</span>
           <span className="topbarLink" onClick={logoutHandler}>Log Out</span>
         </div>
         <div className="topbarIcons">

@@ -39,7 +39,6 @@ export default function Post({ post }) {
   }
  
 
- 
 
   const likeHandler = () => {
     try {
@@ -68,11 +67,10 @@ export default function Post({ post }) {
             <span className="postDate">{format(post.createdAt)}</span>
           </div>
           <div className="postTopRight">
-          
+           {post.userId === currentUser._id &&
             <Button size="small" color="primary" onClick={deleteHandler}>
-              <DeleteIcon fontSize="small" /> &nbsp;  Delete
-              
-            </Button>
+              <DeleteIcon fontSize="small" /> &nbsp;  Delete  
+            </Button>}
             
           </div>
         </div>
