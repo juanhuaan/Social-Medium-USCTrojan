@@ -17,7 +17,7 @@ export default function Share() {
   const tags = useRef();
   const desc = useRef();
   const [file, setFile] = useState(null);
-  
+
   const submitHandler = async (e) => {
     e.preventDefault();
     let tagsArr = [];
@@ -47,7 +47,7 @@ export default function Share() {
     } catch (err) { }
   };
 
-  
+
 
   return (
     <div className="share">
@@ -62,23 +62,23 @@ export default function Share() {
             }
             alt=""
           />
-         <form className="shareForm">
-         <input
-            placeholder={ "Hi " +  user.username + ", what's happening?" }
-            className="shareInput"
-            ref={desc}
-          /> 
-          <div className="shareOption">
+          <form className="shareForm">
+            <input
+              placeholder={"Hi " + user.username + ", what's happening?"}
+              className="shareInput"
+              ref={desc}
+            />
+            <div className="shareOption">
               <Label htmlColor="#CD5C5C" className="shareIcon" />
               <input
                 placeholder={"# tags (comma is a must): weather, mood, study, travel, cat, ..."}
                 type="text"
                 className="tagInput"
                 ref={tags}
-                autocomplete="text"
-            />
-            </div>  
-         </form>
+                autoComplete="text"
+              />
+            </div>
+          </form>
         </div>
         <hr className="shareHr" />
         {file && (
