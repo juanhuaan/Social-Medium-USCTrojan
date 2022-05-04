@@ -6,6 +6,7 @@ import axios from "axios";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import {Label} from "@material-ui/icons";
 
 export default function Post({ post }) {
   const [like, setLike] = useState(post.likes.length);
@@ -47,6 +48,15 @@ export default function Post({ post }) {
     setLike(isLiked ? like - 1 : like + 1);
     setIsLiked(!isLiked);
   };
+
+  const formatting = (tags) => {
+    let tagStr = ""
+    for (let tag of tags) {
+      tagStr += tag + ", ";
+    }
+    return tagStr.slice(0, tagStr.length - 2)
+  }
+
   return (
     <div className="post">
       <div className="postWrapper">
@@ -70,18 +80,18 @@ export default function Post({ post }) {
            {post.userId === currentUser._id &&
             <Button size="small" color="primary" onClick={deleteHandler}>
               <DeleteIcon fontSize="small" /> &nbsp;  Delete  
-            </Button>}
-            
+            </Button>} 
           </div>
         </div>
         <div className="postCenter">
           <span className="postText">{post?.desc}</span>
           <img className="postImg" src={PF + post.img} alt="" />
         </div>
-        <div className="postSub">
-          <span className="postText">{post?.tags}</span>
-         
-        </div>
+
+        { (post.tags.length !== 0)&& <div className="postSub">
+        <Label htmlColor="#CD5C5C" className="postIcon" /> 
+          <span className="postText" fontSize = "60%" > {formatting(post?.tags)}</span>
+        </div>}
         <div className="postBottom">
           <div className="postBottomLeft">
             <img

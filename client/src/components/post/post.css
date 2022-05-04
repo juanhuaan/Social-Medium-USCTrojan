@@ -41,7 +41,15 @@
 .postCenter{
     margin: 20px 0;
 }
+.postSub {
+   display: flex;
+}
 
+.postIcon{
+  display: flex;
+  font-size: 18px;
+  margin-right: 3px;
+}
 .postImg{
     margin-top: 20px;
     width: 100%;
