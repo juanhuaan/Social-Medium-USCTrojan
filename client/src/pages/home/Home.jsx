@@ -7,13 +7,16 @@ import { useState, useEffect } from "react";
 
 export default function Home() {
   const [searchTag, setSearchTag] = useState(null);
+  const [homePage, setHomePage] = useState(false);
+  const [timeLine, setTimeLine] = useState(false);
+
 
   return (
     <>
-      <Topbar setSearchTag={setSearchTag} />
+      <Topbar setSearchTag={setSearchTag} setHomePage = {setHomePage} setTimeLine = {setTimeLine} />
       <div className="homeContainer">
         <Sidebar />
-        <Feed searchTag={searchTag} />
+        <Feed searchTag={searchTag} homePage ={homePage} timeLine ={timeLine} />
         <Rightbar />
       </div>
     </>

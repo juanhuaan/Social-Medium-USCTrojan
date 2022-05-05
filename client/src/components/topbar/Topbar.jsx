@@ -5,7 +5,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 
-export default function Topbar({ setSearchTag }) {
+export default function Topbar({ setSearchTag, setHomePage, setTimeLine }) {
   const { user, dispatch } = useContext(AuthContext);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
@@ -17,6 +17,14 @@ export default function Topbar({ setSearchTag }) {
       await axios.get("/");
     } catch (err) { console.log(err) }
   };
+
+  const HomepageHandler = () => {
+    setHomePage(true);
+  }
+
+  const TimelineHandle = () => {
+    setTimeLine(true);
+  }
 
 
 
@@ -39,8 +47,8 @@ export default function Topbar({ setSearchTag }) {
       </div>
       <div className="topbarRight">
         <div className="topbarLinks">
-          <span className="topbarLink" >Homepage</span>
-          <span className="topbarLink" >Timeline</span>
+          <span className="topbarLink" onClick= {HomepageHandler} >Homepage</span>
+          <span className="topbarLink" onClick= {TimelineHandle}>Timeline</span>
           <span className="topbarLink" onClick={logoutHandler}>Log Out</span>
         </div>
         <div className="topbarIcons">

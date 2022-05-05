@@ -5,13 +5,28 @@ import "./feed.css";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 
-export default function Feed({ username, searchTag, profile}) {
+export default function Feed({ username, searchTag, profile, timeLine, homePage}) {
   const [posts, setPosts] = useState([]);
   const { user } = useContext(AuthContext);
 
   // console.log('Feed username', username)
   // console.log('Feed searchTag', searchTag)
   
+  // timeLine 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const res = await axios.get("/posts/timeline/" + user._id);
+        //: await axios.get("/posts/homepage/" + user._id);
+
+      setPosts(
+        res.data.sort((p1, p2) => {
+          return new Date(p2.createdAt) - new Date(p1.createdAt);
+        })
+      );
+    };
+    fetchPosts();
+  }, [timeLine]);
+
   // profile  
   useEffect(() => {
     const fetchPosts = async () => {
@@ -45,7 +60,7 @@ export default function Feed({ username, searchTag, profile}) {
       );
     };
     fetchPosts();
-  }, [username, user._id]);
+  }, [username, user._id, homePage]);
 
   // search function
   useEffect(() => {
