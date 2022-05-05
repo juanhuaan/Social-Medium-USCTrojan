@@ -75,4 +75,16 @@
     cursor: pointer;
     border-bottom: 1px dashed gray;
     font-size: 15px;
+    vertical-align: baseline;
+}
+
+.postCommentArrow{
+    height: 14px;
+    margin-left: 4px;
+    transform: rotate(0deg);
+    transition: transform 200ms;
+}
+
+.postCommentArrow.downward{
+    transform: rotate(180deg);
 }
