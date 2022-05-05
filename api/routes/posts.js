@@ -3,7 +3,6 @@ const Post = require("../models/Post");
 const User = require("../models/User");
 
 //create a post
-
 router.post("/", async (req, res) => {
   const newPost = new Post(req.body);
   try {
@@ -13,8 +12,8 @@ router.post("/", async (req, res) => {
     res.status(500).json(err);
   }
 });
-//update a post
 
+//update a post
 router.put("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -28,14 +27,11 @@ router.put("/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
-//delete a post
 
+//delete a post
 router.delete("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    // console.log("post ID" + req.params.id);
-    // console.log(req.body);
-    // console.log("param user" + post.userId);
     if (post.userId.includes(req.body.userId)) {
       await post.deleteOne();
       res.status(200).json("the post has been deleted");
@@ -47,14 +43,11 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
-//like / dislike a post
 
+//like / dislike a post
 router.put("/:id/like", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    // console.log("post ID" + req.params.id);
-    // console.log("body userId" + req.body.userId);
-    // console.log("param user" + post.userId);
     if (!post.likes.includes(req.body.userId)) {
       await post.updateOne({ $push: { likes: req.body.userId } });
       console.log("userId" + req.body.userId);
@@ -67,8 +60,8 @@ router.put("/:id/like", async (req, res) => {
     res.status(500).json(err);
   }
 });
-//get a post
 
+//get a post
 router.get("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -79,7 +72,6 @@ router.get("/:id", async (req, res) => {
 });
 
 //get timeline posts
-
 router.get("/timeline/:userId", async (req, res) => {
   try {
     const currentUser = await User.findById(req.params.userId);
@@ -95,27 +87,35 @@ router.get("/timeline/:userId", async (req, res) => {
   }
 });
 
+
+
+//get all users post 
+router.get ("/homepage/:userId", async (req, res) => {
+  try {
+    
+    let allPosts = await Post.find({});
+    const curUser = await User.findById(req.params.userId);
+   
+    allPosts.sort((a, b) => {
+      if (curUser.followers.includes(a.userId) || a.userId === curUser._id && (!curUser.followers.includes(b.userId) || b.userId !== curUser._id)) {
+        return 1;
+      } else if (curUser.followers.includes(b.userId) || b.userId === curUser._id && (!curUser.followers.includes(a.userId) || a.userId !== curUser._id)) {
+        return -1;
+      } 
+      return 0;
+    });
+    res.status(200).json(allPosts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 //get user's all posts
 router.get("/profile/:username", async (req, res) => {
   try {
     const user = await User.findOne({ username: req.params.username });
     const posts = await Post.find({ userId: user._id });
     res.status(200).json(posts);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-module.exports = router;
-// update a post
-router.put('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { userId, desc, img, likes, comments, tags } = req.body;
-    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
-    const updatedPost = { userId, desc, img, likes, comments, tags };
-    await Post.findByIdAndUpdate(id, updatedPost, { new: true });
-    res.status(200).json(updatedPost);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -137,3 +137,21 @@ router.post('/:id/commentPost', async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+
+module.exports = router;
+
+
+// // update a post
+// router.put('/:id', async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { userId, desc, img, likes, comments, tags } = req.body;
+//     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
+//     const updatedPost = { userId, desc, img, likes, comments, tags };
+//     await Post.findByIdAndUpdate(id, updatedPost, { new: true });
+//     res.status(200).json(updatedPost);
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });

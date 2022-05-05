@@ -8,6 +8,7 @@ import { format } from "timeago.js";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { Comments } from "../comments/Comments";
+import { Label } from "@material-ui/icons";
 
 export default function Post({ post }) {
     const [like, setLike] = useState(post.likes.length);
@@ -45,6 +46,13 @@ export default function Post({ post }) {
         setLike(isLiked ? like - 1 : like + 1);
         setIsLiked(!isLiked);
     };
+    const formatting = (tags) => {
+        let tagStr = ""
+        for (let tag of tags) {
+            tagStr += tag + ", ";
+        }
+        return tagStr.slice(0, tagStr.length - 2)
+    }
 
     return (
         <div className="post">
@@ -66,15 +74,22 @@ export default function Post({ post }) {
                         <span className="postDate">{format(post.createdAt)}</span>
                     </div>
                     <div className="postTopRight">
-                        <Button size="small" color="secondary" onClick={deleteHandler}>
-                            <DeleteIcon fontSize="small" /> &nbsp; Delete
-                        </Button>
+                        {post.userId === currentUser._id &&
+                            <Button size="small" color="primary" onClick={deleteHandler}>
+                                <DeleteIcon fontSize="small" /> &nbsp;  Delete
+                            </Button>}
                     </div>
                 </div>
                 <div className="postCenter">
                     <span className="postText">{post?.desc}</span>
                     <img className="postImg" src={PF + post.img} alt="" />
                 </div>
+
+                {(post.tags.length !== 0) && <div className="postSub">
+                    <Label htmlColor="#CD5C5C" className="postIcon" />
+                    <span className="postText" fontSize="60%" > {formatting(post?.tags)}</span>
+                </div>}
+                <hr className="shareHr" />
                 <div className="postBottom">
                     <div className="postBottomLeft">
                         <img
@@ -107,6 +122,7 @@ export default function Post({ post }) {
                     </div>
                 </div>
             </div>
+
             <Collapse
                 in={isShowingComment}
                 className="commentWrapper"

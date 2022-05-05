@@ -6,6 +6,7 @@ import {
   EmojiEmotions,
   Cancel,
 } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
@@ -13,14 +14,19 @@ import axios from "axios";
 export default function Share() {
   const { user } = useContext(AuthContext);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const tags = useRef();
   const desc = useRef();
   const [file, setFile] = useState(null);
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    let tagsArr = [];
+    tagsArr = tags.current.value.split(",");
+    let newArr = tagsArr.map(val => val.toLowerCase().trim())
     const newPost = {
       userId: user._id,
       desc: desc.current.value,
+      tags: newArr
     };
     if (file) {
       const data = new FormData();
@@ -31,18 +37,23 @@ export default function Share() {
       console.log(newPost);
       try {
         await axios.post("/upload", data);
-      } catch (err) {}
+      } catch (err) { }
     }
     try {
       await axios.post("/posts", newPost);
       window.location.reload();
-    } catch (err) {}
+      // 1. Notify Feed to refresh
+      // 2. Motify User model to re-fetch data from server
+    } catch (err) { }
   };
+
+
 
   return (
     <div className="share">
       <div className="shareWrapper">
         <div className="shareTop">
+        <Link to={`/profile/${user.username}`}>
           <img
             className="shareProfileImg"
             src={
@@ -52,11 +63,24 @@ export default function Share() {
             }
             alt=""
           />
-          <input
-            placeholder={"What's in your mind " + user.username + "?"}
-            className="shareInput"
-            ref={desc}
-          />
+          </Link>
+          <form className="shareForm">
+            <input
+              placeholder={"Hi " + user.username + ", what's happening?"}
+              className="shareInput"
+              ref={desc}
+            />
+            <div className="shareOption">
+              <Label htmlColor="#CD5C5C" className="shareIcon" />
+              <input
+                placeholder={"# tags (comma is a must): weather, mood, study, travel, cat, ..."}
+                type="text"
+                className="tagInput"
+                ref={tags}
+                autoComplete="text"
+              />
+            </div>
+          </form>
         </div>
         <hr className="shareHr" />
         {file && (
@@ -78,10 +102,10 @@ export default function Share() {
                 onChange={(e) => setFile(e.target.files[0])}
               />
             </label>
-            <div className="shareOption">
+            {/* <div className="shareOption">
               <Label htmlColor="blue" className="shareIcon" />
-              <span className="shareOptionText">Tag</span>
-            </div>
+              <span className="shareOptionText">Tag</span>  
+            </div> */}
             <div className="shareOption">
               <Room htmlColor="green" className="shareIcon" />
               <span className="shareOptionText">Location</span>

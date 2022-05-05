@@ -1,15 +1,18 @@
 import axios from "axios";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import "./register.css";
-import { useHistory } from "react-router";
+// import { useHistory } from "react-router";
 import { Link, Grid } from "@material-ui/core";
+import { loginCall } from "../../apiCalls";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Register() {
   const username = useRef();
   const email = useRef();
   const password = useRef();
   const passwordAgain = useRef();
-  const history = useHistory();
+  // const history = useHistory();
+  const { dispatch } = useContext(AuthContext);
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -23,7 +26,12 @@ export default function Register() {
       };
       try {
         await axios.post("/auth/register", user);
-        history.push("/login");
+        loginCall(
+          { email: email.current.value, password: password.current.value },
+          dispatch
+        )
+        // history.push("/login");
+
       } catch (err) {
         console.log(err);
       }
@@ -70,7 +78,7 @@ export default function Register() {
               type="password"
             />
             <button className="loginButton" type="submit">
-              Sign Up
+              Sign Up&Log in
             </button>
 
             <Grid
@@ -80,10 +88,10 @@ export default function Register() {
               alignItems="center"
               justifyContent="center"
             >
-            <Link href='/login'>
-            Log into Account
-            </Link>
-            </Grid> 
+              <Link href='/login'>
+                Log into Account
+              </Link>
+            </Grid>
           </form>
         </div>
       </div>
