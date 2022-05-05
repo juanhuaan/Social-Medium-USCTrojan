@@ -75,7 +75,8 @@ router.get("/:id", async (req, res) => {
 router.get("/timeline/:userId", async (req, res) => {
   try {
     const currentUser = await User.findById(req.params.userId);
-    const userPosts = await Post.find({ userId: currentUser._id });
+    // check if the post is comment
+    const userPosts = await Post.find( { $and: [{ userId: currentUser._id }, {isComment: false}]});
     const friendPosts = await Promise.all(
       currentUser.followings.map((friendId) => {
         return Post.find({ userId: friendId });
@@ -93,7 +94,7 @@ router.get("/timeline/:userId", async (req, res) => {
 router.get ("/homepage/:userId", async (req, res) => {
   try {
     
-    let allPosts = await Post.find({});
+    let allPosts = await Post.find({isComment: false});
     const curUser = await User.findById(req.params.userId);
    
     allPosts.sort((a, b) => {
@@ -114,26 +115,89 @@ router.get ("/homepage/:userId", async (req, res) => {
 router.get("/profile/:username", async (req, res) => {
   try {
     const user = await User.findOne({ username: req.params.username });
-    const posts = await Post.find({ userId: user._id });
+    const posts = await Post.find({ $and: [{ userId: user._id }, {isComment: false}]});
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-// comment a post
-router.post('/:id/commentPost', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { value } = req.body;
-    const post = await Post.findById(id);
-    console.log(post);
-    post.comments.push(value);
-    const updated = await Post.findByIdAndUpdate(id, post, { new: true });
-    res.status(200).json(updated);
+/**
+ * Method: POST
+ * Description: Post a Comment
+ * URL: /api/posts/:postId/comments
+ * req.body = {
+    "userId" : "6271819fc8bf11702e17bdbb",
+    "desc" : string
+   }
+ * res = {
+    "id": post.id,
+    "avatar": user.profilePicture,
+    "content": newComment.desc,
+    "username": user.username,
+    "timestamps": newComment.createdAt
+  }
+ */
 
+router.post('/:postId/comments', async (req, res) => {
+  try {
+    // the body input of the comment must be desc
+    const newComment = new Post(req.body);
+    newComment.isComment = true;
+    const savedComment = await newComment.save();
+    const commentId = savedComment._id;
+   
+    const post = await Post.findById(req.params.postId);
+    await post.updateOne({ $push: { comments: commentId } });
+
+    const user = await User.findById(newComment.userId);
+    res.status(200).json({
+      id: post.id,
+      avatar: user.profilePicture,
+      content: newComment.desc,
+      username: user.username,
+      timestamps: newComment.createdAt
+  })
   } catch (err) {
-    console.error(err);
+    res.status(500).json(err);
+  }
+});
+
+
+/**
+ * Method: GET
+ * Description: Get All comments of a given post
+ * URL: /api/posts/:postId/comments
+ * res = {
+    "id": post.id,
+    "avatar": user.profilePicture,
+    "content": comment.desc,
+    "username": user.username,
+    "timestamps": comment.createdAt
+  }
+ */
+
+router.get('/:postId/comments', async (req, res) => {
+  try{
+    const post = await Post.findById(req.params.postId);
+    let out = []
+    for (let id of post.comments) {
+      let commentPost = await Post.findById(id);
+      //console.log(commentPost)
+      let commentUser = await User.findById(commentPost.userId);
+      let result = {
+        id: id,
+        avatar: commentUser.profilePicture,
+        content: commentPost.desc,
+        username: commentUser.username,
+        timestamps: commentPost.createdAt
+      }
+      out.push(result);
+    }
+     console.log(out)
+    res.write(JSON.stringify(out));
+    res.end();
+  } catch(err) {
     res.status(500).json(err);
   }
 });
