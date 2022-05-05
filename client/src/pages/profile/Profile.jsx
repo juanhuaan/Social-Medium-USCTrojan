@@ -15,6 +15,9 @@ export default function Profile() {
   const [coverPicture, setcoverPicture] = useState(null);
   const username = useParams().username;
   const [profile, setProfile] = useState(true);
+  const [searchTag, setSearchTag] = useState(null);
+  const [homePage, setHomePage] = useState(false);
+  const [timeLine, setTimeLine] = useState(false);
 
   console.log('coverPicture', coverPicture)
 
@@ -71,7 +74,7 @@ export default function Profile() {
 
   return (
     <>
-      <Topbar />
+      <Topbar setSearchTag={setSearchTag} setHomePage = {setHomePage} setTimeLine = {setTimeLine} />
       <div className="profile">
         <Sidebar />
         <div className="profileRight">
@@ -120,7 +123,8 @@ export default function Profile() {
             </div>
           </div>
           <div className="profileRightBottom">
-            <Feed username={username} profile={profile} />
+            <Feed searchTag={searchTag} homePage ={homePage} timeLine ={timeLine} username={username} profile={profile}/>
+            {/* <Feed username={username} profile={profile} /> */}
             <Rightbar user={user} />
           </div>
         </div>
