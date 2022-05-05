@@ -194,7 +194,7 @@ router.get('/:postId/comments', async (req, res) => {
       }
       out.push(result);
     }
-     console.log(out)
+     // console.log(out)
     res.write(JSON.stringify(out));
     res.end();
   } catch(err) {
