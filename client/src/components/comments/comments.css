@@ -1,0 +1,21 @@
+.commentItem-enter{
+    height: 0px;
+    opacity: 0;
+}
+
+.commentItem-enter-active{
+    height: auto;
+    opacity: 1;
+    transition: height 500ms opacity 500ms;
+}
+
+.commentItem-exit{
+    height: auto;
+    opacity: 1;
+}
+
+.commentItem-exit-active{
+    height: 0px;
+    opacity: 0;
+    transition: height 500ms opacity 500ms;
+}

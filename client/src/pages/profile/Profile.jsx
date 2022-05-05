@@ -11,8 +11,8 @@ import { useParams } from "react-router";
 export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [user, setUser] = useState({});
-  const [profilePicture, setprofilePicture] = useState(null);
-  const [coverPicture, setcoverPicture] = useState(null);
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [coverPicture, setCoverPicture] = useState(null);
   const username = useParams().username;
   const [profile, setProfile] = useState(true);
   const [searchTag, setSearchTag] = useState(null);
@@ -74,13 +74,13 @@ export default function Profile() {
 
   return (
     <>
-      <Topbar setSearchTag={setSearchTag} setHomePage = {setHomePage} setTimeLine = {setTimeLine} />
+      <Topbar setSearchTag={setSearchTag} setHomePage={setHomePage} setTimeLine={setTimeLine} />
       <div className="profile">
         <Sidebar />
         <div className="profileRight">
           <div className="profileRightTop">
-            <div className="profileCover">
-              <label htmlFor="cover" className="changePicture">
+            <div className="coverAvatar">
+              <div className="changeCover">
                 <img
                   className="profileCoverImg"
                   src={
@@ -95,12 +95,14 @@ export default function Profile() {
                   type="file"
                   id="cover"
                   accept=".png,.jpeg,.jpg"
-                  onChange={(e) => { setcoverPicture(e.target.files[0]) }}
+                  onChange={(e) => { setCoverPicture(e.target.files[0]) }}
                 />
-              </label>
-              <label htmlFor="profile" className="changePicture">
+                <label className="coverLabel" htmlFor="cover"></label>
+              </div>
+
+              <div className="changeAvatar">
                 <img
-                  className="profileUserImg"
+                  className="profileAvatarImg"
                   src={
                     user.profilePicture
                       ? PF + user.profilePicture
@@ -113,9 +115,10 @@ export default function Profile() {
                   type="file"
                   id="profile"
                   accept=".png,.jpeg,.jpg"
-                  onChange={(e) => { setprofilePicture(e.target.files[0]) }}
+                  onChange={(e) => { setProfilePicture(e.target.files[0]) }}
                 />
-              </label>
+                <label className="avatarLabel" htmlFor="avatar"></label>
+              </div>
             </div>
             <div className="profileInfo">
               <h4 className="profileInfoName">{user.username}</h4>
@@ -123,7 +126,7 @@ export default function Profile() {
             </div>
           </div>
           <div className="profileRightBottom">
-            <Feed searchTag={searchTag} homePage ={homePage} timeLine ={timeLine} username={username} profile={profile}/>
+            <Feed searchTag={searchTag} homePage={homePage} timeLine={timeLine} username={username} profile={profile} />
             {/* <Feed username={username} profile={profile} /> */}
             <Rightbar user={user} />
           </div>
