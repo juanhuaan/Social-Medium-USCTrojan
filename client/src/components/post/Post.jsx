@@ -91,7 +91,7 @@ export default function Post({ post, setPosts }) {
                     <img className="postImg" src={PF + post.img} alt="" />
                 </div>
 
-                {(post.tags.length !== 0) && <div className="postSub">
+                {(post.tags[0] !== "") && <div className="postSub">
                     <Label htmlColor="#CD5C5C" className="postIcon" />
                     <span className="postText" fontSize="60%" > {formatting(post?.tags)}</span>
                 </div>}
