@@ -20,10 +20,12 @@ export default function Topbar({ setSearchTag, setHomePage, setTimeLine }) {
 
   const HomepageHandler = () => {
     setHomePage(true);
+    setTimeLine(false);
   }
 
   const TimelineHandle = () => {
     setTimeLine(true);
+    setHomePage(false);
   }
 
 
@@ -32,7 +34,7 @@ export default function Topbar({ setSearchTag, setHomePage, setTimeLine }) {
     <div className="topbarContainer">
       <div className="topbarLeft">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">Trojan Familly</span>
+          <span className="logo" onClick= {HomepageHandler}>Trojan Familly</span>
         </Link>
       </div>
       <div className="topbarCenter">

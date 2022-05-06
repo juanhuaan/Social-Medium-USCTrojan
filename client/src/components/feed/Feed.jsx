@@ -24,7 +24,7 @@ export default function Feed({ username, searchTag, profile, timeLine, homePage}
         })
       );
     };
-    fetchPosts();
+    if(timeLine === true) fetchPosts();
   }, [timeLine]);
 
   // profile  
@@ -59,14 +59,14 @@ export default function Feed({ username, searchTag, profile, timeLine, homePage}
         })
       );
     };
-    fetchPosts();
+    if(homePage === true)fetchPosts();
   }, [username, user._id, homePage]);
 
   // search function
   useEffect(() => {
     const fetchPosts = async () => {
       // const res = await axios.get("/posts/timeline/" + user._id);
-       const res =await axios.get("/posts/homepage/" + user._id);
+      const res = await axios.get("/posts/homepage/" + user._id);
       let allPosts = res.data;
       if (!!searchTag) {
         allPosts = allPosts.filter(p => p.tags.includes(searchTag) || p.desc.includes(searchTag));
@@ -86,7 +86,7 @@ export default function Feed({ username, searchTag, profile, timeLine, homePage}
   return (
     <div className="feed">
       <div className="feedWrapper">
-        {(!username || username === user.username) && <Share />}
+        {(!username || username === user.username) && <Share setPosts = {setPosts}/>}
         {posts.map((p) => (
           <Post key={p._id} post={p} />
         ))}

@@ -152,7 +152,7 @@ export function Comments({ postId, setcommentNum }) {
                         
                         <div className="commentTop">
                             <div className="commentTopLeft">
-                                <Link to={`/profile/${user.username}`}>
+                                <Link to={`/profile/${comment.username}`}>
                                     <img
                                         className="commentProfileImg"
                                         src={
@@ -163,7 +163,7 @@ export function Comments({ postId, setcommentNum }) {
                                         alt=""
                                     />
                                 </Link>
-                                <span className="postUsername">{user.username}</span>
+                                <span className="postUsername">{comment.username}</span>
                                 <span className="postDate">{format(comment.timestamps)}</span>
                             </div>
                             <div>
