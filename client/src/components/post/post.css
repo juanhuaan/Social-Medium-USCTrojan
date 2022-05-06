@@ -100,3 +100,28 @@
 .shareHr {
   margin: 20px;
 }
+
+.commentTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.commentTopLeft {
+  display: flex;
+  align-items: center;
+}
+
+.commentProfileImg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: 10px;
+}
+
+.commentCenter{
+  margin-left: 50px;
+  margin-bottom: 10px;
+}

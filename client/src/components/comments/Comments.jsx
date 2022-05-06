@@ -10,20 +10,24 @@ import { TextField, Button, CircularProgress, Collapse } from "@mui/material";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import { TransitionGroup } from 'react-transition-group';
+import { format } from "timeago.js";
+import { Link } from "react-router-dom";
+import DeleteIcon from '@material-ui/icons/Delete';
+import { useContext, useEffect, useState, useRef } from "react";
 
+export function Comments({ postId, setcommentNum }) {
 
-export function Comments({ postId }) {
+    const commentContent = useRef()
+    const [comments, setComments] = useState([])
+    //const [isPosting, setIsPosting] = useState(false)
+    const [isFetchingComments, setIsFetchingComments] = useState(true)
 
-    const commentContent = React.useRef()
-    const [comments, setComments] = React.useState([])
-    const [commentsLength, setcommentsLength] = React.useState(0)
-    //const [isPosting, setIsPosting] = React.useState(false)
-    const [isFetchingComments, setIsFetchingComments] = React.useState(true)
+    const { user } = useContext(AuthContext)
 
-    const { user } = React.useContext(AuthContext)
+    const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
     // fetch comments
-    React.useEffect(() => {
+    useEffect(() => {
         /**
          * Method: GET 
          * URL: /posts/:postId/comments
@@ -33,16 +37,13 @@ export function Comments({ postId }) {
             setIsFetchingComments(true)
             try {
                 const result = await axios.get(`/posts/${postId}/comments`)
+                //console.log(result)
                 setComments(result.data.sort((p1, p2) => {
                     return new Date(p2.timestamps) - new Date(p1.timestamps);
                   }));
-                setcommentsLength(comments.length);
+                //console.log(comments)
             } catch (err) {
-                setComments([
-                    { id: 0, avatar: "", content: "1", username: "user1" },
-                    { id: 1, avatar: "", content: "2", username: "user2" },
-                    { id: 2, avatar: "", content: "3", username: "user3" }
-                ])
+                console.log(err)
             }
             setIsFetchingComments(false)
         }
@@ -50,7 +51,7 @@ export function Comments({ postId }) {
         //     fetchComments(postId)
         // }, 20)
         fetchComments(postId)
-    }, [postId, commentsLength])
+    }, [postId])
 
     // push comments
     /**
@@ -70,16 +71,42 @@ export function Comments({ postId }) {
             window.alert("You are not login!")
         } else {
             try {
-                await axios.post(`/posts/${postId}/comments`, {
+                const res = await axios.post(`/posts/${postId}/comments`, {
                     userId: user._id ?? null,
                     desc: commentContent.current.value
                 })
-                setcommentsLength(prevalue => prevalue + 1);
+                console.log(res.data);
+                commentContent.current.value = null;
+
+                setComments(prevComments => {
+                    return [res.data, ...prevComments]
+                });
+                
+                setcommentNum(prevCommentsNum => prevCommentsNum + 1);
+                console.log(comments)
             } catch (err) {
                 console.error("Fail to post!")
             }
         }
         //setIsPosting(false)
+    }
+
+
+    // useEffect(() => {
+    //     setIsLiked(post.likes.includes(currentUser._id));
+    // }, [comments]);
+
+
+    const deleteHandler = async (commentId, userId) => {
+        try {
+            // console.log(commentId)
+            // console.log(userId)
+            await axios.delete("/posts/" + commentId, { data: { userId, postId } });
+            setComments(prevComments => {
+                return prevComments.filter(comment => comment.commentId !== commentId);
+            });
+            setcommentNum(prevCommentsNum => prevCommentsNum - 1);
+        } catch (err) { console.error(err) }
     }
 
     return (
@@ -109,7 +136,7 @@ export function Comments({ postId }) {
                         justifyContent: 'center'
                     }}
                 >
-                    <CircularProgress />
+                    <CircularProgress  size = '1rem'/>
                 </Box>
             }
             <List
@@ -118,21 +145,40 @@ export function Comments({ postId }) {
                     bgcolor: 'background.paper'
                 }}
             >
-                <TransitionGroup >
-                    {comments.map((comment) => (
-                        <Collapse key={comment.id}>
-                            <Divider variant="middle" component="li" />
-                            <ListItem>
-                                <ListItemAvatar>
-                                    <Avatar src={comment.avatar}>
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary={comment.content} secondary={comment.username} />
-                            </ListItem>
-                        </Collapse>
-                    ))}
-                </TransitionGroup>
-
+            <TransitionGroup >
+                {comments.map((comment) => (
+                    <Collapse key={comment.commentId}>
+                        <Divider variant="middle" component="li" />
+                        
+                        <div className="commentTop">
+                            <div className="commentTopLeft">
+                                <Link to={`/profile/${comment.username}`}>
+                                    <img
+                                        className="commentProfileImg"
+                                        src={
+                                            comment.avatar
+                                                ? PF + comment.avatar
+                                                : PF + "person/noAvatar.png"
+                                        }
+                                        alt=""
+                                    />
+                                </Link>
+                                <span className="postUsername">{comment.username}</span>
+                                <span className="postDate">{format(comment.timestamps)}</span>
+                            </div>
+                            <div>
+                                {comment.username === user.username &&
+                                    <Button size="small" color="primary" onClick={(e) =>deleteHandler(comment.commentId, comment.userId)}>
+                                        <DeleteIcon fontSize="small" />
+                                    </Button>}
+                            </div>
+                        </div>
+                        <div className="commentCenter">
+                            <span className="postText">{comment?.content}</span>
+                        </div>
+                    </Collapse>
+                ))}
+            </TransitionGroup>
             </List>
         </>
     )
