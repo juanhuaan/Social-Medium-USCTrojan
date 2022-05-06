@@ -66,9 +66,10 @@ export function Comments({ postId }) {
             window.alert("You are not login!")
         } else {
             try {
-                axios.post(`/post/${postId}/comments`, {
+                console.log(commentContent.current.value)
+                axios.post(`/posts/${postId}/comments`, {
                     userId: user._id ?? null,
-                    content: commentContent.current
+                    desc: commentContent.current.value
                 })
             } catch (err) {
                 console.error("Fail to post!")
