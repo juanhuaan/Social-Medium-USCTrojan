@@ -33,9 +33,10 @@ export default function Post({ post }) {
         fetchUser();
     }, [post.userId]);
 
-    const deleteHandler = () => {
+    const deleteHandler = async () => {
         try {
-            axios.delete("/posts/" + post._id, { data: { userId: currentUser._id } });
+            await axios.delete("/posts/" + post._id, { data: { userId: currentUser._id } });
+            window.location.reload();
         } catch (err) { console.error(err) }
     }
 
