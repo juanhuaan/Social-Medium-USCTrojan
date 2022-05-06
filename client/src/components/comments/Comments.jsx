@@ -16,7 +16,8 @@ export function Comments({ postId }) {
 
     const commentContent = React.useRef()
     const [comments, setComments] = React.useState([])
-    const [isPosting, setIsPosting] = React.useState(false)
+    const [commentsLength, setcommentsLength] = React.useState(0)
+    //const [isPosting, setIsPosting] = React.useState(false)
     const [isFetchingComments, setIsFetchingComments] = React.useState(true)
 
     const { user } = React.useContext(AuthContext)
@@ -32,7 +33,10 @@ export function Comments({ postId }) {
             setIsFetchingComments(true)
             try {
                 const result = await axios.get(`/posts/${postId}/comments`)
-                setComments(result.data)
+                setComments(result.data.sort((p1, p2) => {
+                    return new Date(p2.timestamps) - new Date(p1.timestamps);
+                  }));
+                setcommentsLength(comments.length);
             } catch (err) {
                 setComments([
                     { id: 0, avatar: "", content: "1", username: "user1" },
@@ -42,11 +46,11 @@ export function Comments({ postId }) {
             }
             setIsFetchingComments(false)
         }
-        window.setTimeout(() => {
-            fetchComments(postId)
-        }, 5000)
-        // fetchComments(postId)
-    }, [postId])
+        // window.setTimeout(() => {
+        //     fetchComments(postId)
+        // }, 20)
+        fetchComments(postId)
+    }, [postId, commentsLength])
 
     // push comments
     /**
@@ -61,21 +65,21 @@ export function Comments({ postId }) {
      * Desc: current user post a comment under the given Post
      * */
     const postComment = async () => {
-        setIsPosting(true)
+        //setIsPosting(true)
         if (!user) {
             window.alert("You are not login!")
         } else {
             try {
-                console.log(commentContent.current.value)
-                axios.post(`/posts/${postId}/comments`, {
+                await axios.post(`/posts/${postId}/comments`, {
                     userId: user._id ?? null,
                     desc: commentContent.current.value
                 })
+                setcommentsLength(prevalue => prevalue + 1);
             } catch (err) {
                 console.error("Fail to post!")
             }
         }
-        setIsPosting(false)
+        //setIsPosting(false)
     }
 
     return (
