@@ -45,6 +45,9 @@ export default function Share({ setPosts }) {
       setPosts(prevPosts => {
         return [res.data, ...prevPosts]
       });
+      desc.current.value = null;
+      tags.current.value = null;
+      setFile(null);
       //window.location.reload();
       // 1. Notify Feed to refresh
       // 2. Motify User model to re-fetch data from server
