@@ -79,7 +79,7 @@ router.get("/timeline/:userId", async (req, res) => {
     const userPosts = await Post.find( { $and: [{ userId: currentUser._id }, {isComment: false}]});
     const friendPosts = await Promise.all(
       currentUser.followings.map((friendId) => {
-        return Post.find({ userId: friendId });
+        return Post.find({ $and:[{ userId: friendId }, {isComment: false}]});
       })
     );
     res.status(200).json(userPosts.concat(...friendPosts));
@@ -151,6 +151,7 @@ router.post('/:postId/comments', async (req, res) => {
     await post.updateOne({ $push: { comments: commentId } });
 
     const user = await User.findById(newComment.userId);
+   
     res.status(200).json({
       id: post.id,
       avatar: user.profilePicture,
@@ -194,9 +195,8 @@ router.get('/:postId/comments', async (req, res) => {
       }
       out.push(result);
     }
-     // console.log(out)
-    res.write(JSON.stringify(out));
-    res.end();
+    res.status(200).json(out);
+   
   } catch(err) {
     res.status(500).json(err);
   }
