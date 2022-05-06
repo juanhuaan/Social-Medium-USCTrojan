@@ -40,8 +40,12 @@ export default function Share({ setPosts }) {
       } catch (err) { }
     }
     try {
-      await axios.post("/posts", newPost);
-      window.location.reload();
+      const res = await axios.post("/posts", newPost);
+      console.log(res);
+      setPosts(prevPosts => {
+        return [res.data, ...prevPosts]
+      });
+      //window.location.reload();
       // 1. Notify Feed to refresh
       // 2. Motify User model to re-fetch data from server
     } catch (err) { }
