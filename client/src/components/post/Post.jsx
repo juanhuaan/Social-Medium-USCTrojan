@@ -13,8 +13,10 @@ import { Label } from "@material-ui/icons";
 export default function Post({ post }) {
     const [like, setLike] = useState(post.likes.length);
     const [isLiked, setIsLiked] = useState(false);
+    const [commentNum, setcommentNum] = useState(post.comments.length);
 
     const [user, setUser] = useState({});
+
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const { user: currentUser } = useContext(AuthContext);
 
@@ -111,7 +113,7 @@ export default function Post({ post }) {
                         setIsShowingComment(!isShowingComment)
                     }}>
                         <span className="postCommentText">
-                            {post.comment?.length ?? 0} comment(s)
+                            {commentNum} comment(s)
                             <img
                                 className={
                                     "postCommentArrow " +
@@ -131,6 +133,7 @@ export default function Post({ post }) {
                 <Comments
                     className="comment"
                     postId={post._id}
+                    setcommentNum = {setcommentNum}
                 >
                 </Comments>
             </Collapse>

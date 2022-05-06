@@ -33,7 +33,12 @@ router.delete("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (post.userId.includes(req.body.userId)) {
+      if(post.isComment === true) {
+        const parentPost = await Post.findById(req.body.postId);
+        await parentPost.updateOne({ $pull: { comments: req.params.id } });
+      }
       await post.deleteOne();
+
       res.status(200).json("the post has been deleted");
     } else {
 
@@ -152,11 +157,12 @@ router.post('/:postId/comments', async (req, res) => {
 
     const user = await User.findById(newComment.userId);
     res.status(200).json({
-      id: post.id,
+      commentId: commentId,
       avatar: user.profilePicture,
       content: newComment.desc,
       username: user.username,
-      timestamps: newComment.createdAt
+      timestamps: newComment.createdAt,
+      userId: user._id
   })
   } catch (err) {
     res.status(500).json(err);
@@ -186,17 +192,19 @@ router.get('/:postId/comments', async (req, res) => {
       //console.log(commentPost)
       let commentUser = await User.findById(commentPost.userId);
       let result = {
-        id: id,
+        commentId: id,
         avatar: commentUser.profilePicture,
         content: commentPost.desc,
         username: commentUser.username,
-        timestamps: commentPost.createdAt
+        timestamps: commentPost.createdAt,
+        userId: commentUser._id
       }
       out.push(result);
     }
      // console.log(out)
-    res.write(JSON.stringify(out));
-    res.end();
+    // res.write(JSON.stringify(out));
+    // res.end();
+    res.status(200).json(out);
   } catch(err) {
     res.status(500).json(err);
   }

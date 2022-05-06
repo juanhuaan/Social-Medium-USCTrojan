@@ -19,3 +19,8 @@
     opacity: 0;
     transition: height 500ms opacity 500ms;
 }
+
+.MuiListItemText-primary{
+    height: 10px;
+    font-size: 100px;
+}
