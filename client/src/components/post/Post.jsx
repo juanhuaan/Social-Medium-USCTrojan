@@ -10,7 +10,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { Comments } from "../comments/Comments";
 import { Label } from "@material-ui/icons";
 
-export default function Post({ post }) {
+export default function Post({ post, setPosts }) {
     const [like, setLike] = useState(post.likes.length);
     const [isLiked, setIsLiked] = useState(false);
     const [commentNum, setcommentNum] = useState(post.comments.length);
@@ -38,7 +38,10 @@ export default function Post({ post }) {
     const deleteHandler = async () => {
         try {
             await axios.delete("/posts/" + post._id, { data: { userId: currentUser._id } });
-            window.location.reload();
+            //window.location.reload();
+            setPosts(prevPosts => {
+                return prevPosts.filter(prevPost => prevPost._id !== post._id);
+            })
         } catch (err) { console.error(err) }
     }
 
