@@ -75,7 +75,7 @@ export function Comments({ postId, setcommentNum }) {
                     userId: user._id ?? null,
                     desc: commentContent.current.value
                 })
-                console.log(res.data);
+                //console.log(res.data);
                 commentContent.current.value = null;
 
                 setComments(prevComments => {
