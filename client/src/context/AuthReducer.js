@@ -65,7 +65,9 @@ const AuthReducer = (state, action) => {
             city: action.payload,
             from: action.payload,
             desc: action.payload,
-            relationship: action.payload
+            relationship: action.payload,
+            password: action.password,
+            oldPassword: action.oldPassword
           }
         }
     default:

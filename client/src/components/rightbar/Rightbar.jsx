@@ -17,14 +17,15 @@ export default function Rightbar({ user, setUser }) {
   const from = useRef();
   const desc = useRef();
   const relationship = useRef();
+  const oldPassword = useRef();
+  const password = useRef();
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useContext(AuthContext);
   const [followed, setFollowed] = useState(
     currentUser.followings.includes(user?.id)
   );
 
-  const [userchange, setUserchange] = useState(user);
- 
+
 
   useEffect(() => {
     const getFriends = async () => {
@@ -46,7 +47,8 @@ export default function Rightbar({ user, setUser }) {
       from: from.current.value || user.from,
       city: city.current.value || user.city,
       relationship: relationship.current.value || user.relationship,
-      //password: user.password
+      password: password.current.value,
+      oldPassword: oldPassword.current.value
       
     };
     console.log(userEdit.userId)
@@ -57,29 +59,31 @@ export default function Rightbar({ user, setUser }) {
       setUser(currentUser);
       window.location.reload();
       console.log("Upload Successfully");
-      // setUserchange(preUser =>{
-      //   return [res.data, ...preUser]
-      // })
       
       desc.current.value = null;
       from.current.value = null;
       city.current.value = null;
-      relationship.current.value = null
-      //window.location.reload();
+      relationship.current.value = null;
+      if (password !== null) {
+        await logout();
+      }
+      password.current.value = null;
+      oldPassword.current.value = null
+      
       //await logout();
     }catch (err) {
       console.error(err)
     }
   }
 
-  // const logout = async () => {
-  //   // console.log(user)
-  //   dispatch({ type: "LOG_OUT" })
-  //   // console.log(user)
-  //   try {
-  //     await axios.get("/");
-  //   } catch (err) { console.log(err) }
-  // };
+  const logout = async () => {
+    // console.log(user)
+    dispatch({ type: "LOG_OUT" })
+    // console.log(user)
+    try {
+      await axios.get("/");
+    } catch (err) { console.log(err) }
+  };
 
  
   const handleClick = async () => {
@@ -100,9 +104,6 @@ export default function Rightbar({ user, setUser }) {
       console.error(err)
     }
   };
-
-  
-
 
   const HomeRightbar = () => {
     return (
@@ -185,6 +186,26 @@ export default function Rightbar({ user, setUser }) {
                     type="text"
                     className="profileInput"
                     ref = {relationship || user.relationship}
+                    autoComplete="text"
+                    />
+                </div>
+                <div className = "formInfo">
+                <label for="oldPassword">old password: </label>
+                    <input
+                    placeholder={"****** "}
+                    type="password"
+                    className="profileInput"
+                    ref = {oldPassword}
+                    autoComplete="text"
+                    />
+                </div>
+                <div className = "formInfo">
+                <label for="password"> new password: </label>
+                    <input
+                    placeholder={"****** "}
+                    type="password"
+                    className="profileInput"
+                    ref = {password}
                     autoComplete="text"
                     />
                 </div>
