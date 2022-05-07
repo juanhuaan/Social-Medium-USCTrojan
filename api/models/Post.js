@@ -17,7 +17,7 @@ const PostSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
-    tags: [String],
+    tags: { type: [String], default: [] },
     comments: { type: [String], default: [] },
     isComment:{ type: Boolean, default: false}
 

@@ -79,8 +79,17 @@
   width: 100px;
   height: 100px;
   object-fit: cover;
-  border-radius: 5px;
+  border-radius: 100px;
+  margin-left: 100px;
+  margin-right: 100px;
+  
 }
+.rightbarFollowingName{
+  border-radius: 100px;
+  margin-left: 135px;
+  margin-right: 100px;
+}
+
 
 .rightbarFollowButton{
   margin-top: 30px;

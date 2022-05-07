@@ -86,7 +86,7 @@ export default function Feed({ username, searchTag, profile, timeLine, homePage}
   return (
     <div className="feed">
       <div className="feedWrapper">
-        {(!username || username === user.username) && <Share setPosts = {setPosts}/>}
+        {((!username || username === user.username) && ( profile!== true)) && <Share setPosts = {setPosts}/> }
         {posts.map((p) => (
           <Post key={p._id} post={p} setPosts = {setPosts}/>
         ))}
