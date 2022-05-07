@@ -2,7 +2,6 @@ import "./rightbar.css";
 import { Users } from "../../dummyData";
 import Online from "../online/Online";
 import EditIcon from '@mui/icons-material/Edit';
-import {Label} from "@material-ui/icons";
 import { useContext, useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -11,19 +10,21 @@ import { Add, Remove } from "@material-ui/icons";
 //import { Edit } from "client/src/components/edit/Edit.jsx";
 
 
-export default function Rightbar({ user }) {
+export default function Rightbar({ user, setUser }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const username = useRef();
   const city = useRef();
   const from = useRef();
   const desc = useRef();
   const relationship = useRef();
-  const [edit, setEdit] = useState(null);
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useContext(AuthContext);
   const [followed, setFollowed] = useState(
     currentUser.followings.includes(user?.id)
   );
+
+  const [userchange, setUserchange] = useState(user);
+ 
 
   useEffect(() => {
     const getFriends = async () => {
@@ -39,7 +40,7 @@ export default function Rightbar({ user }) {
 
   const submitHandler = async () => {
     const userEdit = {
-      username: username.current.value || user.username,
+      //username: username.current.value || user.username,
       userId: user._id,
       desc: desc.current.value || user.desc,
       from: from.current.value || user.from,
@@ -52,17 +53,33 @@ export default function Rightbar({ user }) {
     try {
       const res = await axios.put("/users/"+ user._id, userEdit);
       console.log(res);
+      dispatch({ type: 'UPDATEUSER', payload: userEdit })
+      setUser(currentUser);
+      window.location.reload();
+      console.log("Upload Successfully");
+      // setUserchange(preUser =>{
+      //   return [res.data, ...preUser]
+      // })
+      
       desc.current.value = null;
       from.current.value = null;
       city.current.value = null;
       relationship.current.value = null
-      setEdit(prevEdit => {
-        return res.data
-    });
+      //window.location.reload();
+      //await logout();
     }catch (err) {
       console.error(err)
     }
   }
+
+  // const logout = async () => {
+  //   // console.log(user)
+  //   dispatch({ type: "LOG_OUT" })
+  //   // console.log(user)
+  //   try {
+  //     await axios.get("/");
+  //   } catch (err) { console.log(err) }
+  // };
 
  
   const handleClick = async () => {
@@ -118,13 +135,11 @@ export default function Rightbar({ user }) {
         )}
 
 
-        {/* {user.username === currentUser.username && (
-          
-        )} */}
-
+        {user.username === currentUser.username && 
+          (
            <div className="edit">
             <form className="profileForm">    
-                <div>
+                {/* <div className = "formInfo">
                 <label for="username">Username: </label>
                     <input
                     placeholder={ "Username: " + user.username }
@@ -132,8 +147,8 @@ export default function Rightbar({ user }) {
                     type="text"
                     ref={username || user.username}
                     />
-                </div>
-                <div>
+                </div> */}
+                <div className = "formInfo">
                 <label for="description">Description: </label>
                     <input
                     placeholder={(user.desc || "")}
@@ -143,17 +158,17 @@ export default function Rightbar({ user }) {
                     autoComplete="text"
                     />
                 </div>
-                <div >
+                <div className = "formInfo">
                 <label for="City">City: </label>
                     <input
                     placeholder={ (user.city || "")}
                     type="text"
                     className="profileInput"
-                    ref = {city || user.city}
+                    ref = {city || currentUser.city}
                     autoComplete="text"
                     />
                 </div>
-                <div >
+                <div className = "formInfo">
                 <label for="From">From: </label>
                     <input
                     placeholder={ (user.from || "")}
@@ -163,7 +178,7 @@ export default function Rightbar({ user }) {
                     autoComplete="text"
                     />
                 </div>
-                <div >
+                <div className = "formInfo">
                 <label for="relationship">Relationship: </label>
                     <input
                     placeholder={"input 1/2 "}
@@ -174,10 +189,12 @@ export default function Rightbar({ user }) {
                     />
                 </div>
             </form>
-        </div>
-        <button className="shareButton" type = "submit" onClick={ submitHandler }>
-            <EditIcon fontSize="small" />
-        </button>
+        
+            <button className="editButton" type = "submit" onClick={ submitHandler }>
+                <EditIcon fontSize="small" />
+            </button>
+          </div>)}
+  
         
 
 

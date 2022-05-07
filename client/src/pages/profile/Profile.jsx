@@ -21,6 +21,7 @@ export default function Profile() {
   const [searchTag, setSearchTag] = useState(null);
   const [homePage, setHomePage] = useState(false);
   const [timeLine, setTimeLine] = useState(false);
+  const [user, setUser] = useState(currentUser);
 
   // console.log('user: ', currentUser)
 
@@ -32,7 +33,7 @@ export default function Profile() {
       setCoverPicName(res.data.coverPicture);
     };
     fetchUser();
-  }, [username]);
+  }, [username, user]);
 
   const uploadFile = async (imgFile, imgType, fileName) => {
     const data = new FormData();
@@ -128,7 +129,7 @@ export default function Profile() {
           <div className="profileRightBottom">
             <Feed searchTag={searchTag} homePage={homePage} timeLine={timeLine} username={username} profile={profile} />
             {/* <Feed username={username} profile={profile} /> */}
-            <Rightbar user={profileUser} />
+            <Rightbar user={profileUser} setUser={setUser}/>
           </div>
         </div>
       </div>

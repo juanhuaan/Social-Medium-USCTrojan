@@ -56,6 +56,18 @@ const AuthReducer = (state, action) => {
             profilePicture: action.payload
           }
         }
+      case 'UPDATEUSER':
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            //username: action.payload,
+            city: action.payload,
+            from: action.payload,
+            desc: action.payload,
+            relationship: action.payload
+          }
+        }
     default:
       return state
   }

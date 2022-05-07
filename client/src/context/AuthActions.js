@@ -34,3 +34,8 @@ export const UpdateAvatar = userId => ({
   type: 'UPDTAEAVATAR',
   payload: userId
 })
+
+export const UpdateUser = userId => ({
+  type: 'UPDATEUSER',
+  payload: userId
+})

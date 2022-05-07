@@ -109,3 +109,27 @@
 .rightbarFollowButton:focus{
   outline: none;
 }
+
+.profileForm {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.formInfo {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.editButton{
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: rgb(216, 84, 18);
+  font-weight: 500;
+  margin-right: 20px;
+  cursor: pointer;
+  color: white;
+}
