@@ -6,71 +6,58 @@ import Rightbar from "../../components/rightbar/Rightbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
-
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-  const [user, setUser] = useState({});
-  const [profilePicture, setProfilePicture] = useState(null);
-  const [coverPicture, setCoverPicture] = useState(null);
+  const [profileUser, setProfileUser] = useState({});
+  const { user: currentUser, dispatch } = useContext(AuthContext);
+  // const [profilePicName, setProfilePicName] = useState("person/noAvatar.png");
+  const [profilePicName, setProfilePicName] = useState("person/noAvatar.png");
+  const [coverPicName, setCoverPicName] = useState("person/noCover.png")
   const username = useParams().username;
   const [profile, setProfile] = useState(true);
   const [searchTag, setSearchTag] = useState(null);
   const [homePage, setHomePage] = useState(false);
   const [timeLine, setTimeLine] = useState(false);
 
-  console.log('coverPicture', coverPicture)
+  // console.log('user: ', currentUser)
 
   useEffect(() => {
     const fetchUser = async () => {
       const res = await axios.get(`/users?username=${username}`);
-      setUser(res.data);
+      setProfileUser(res.data);
+      setProfilePicName(res.data.profilePicture);
+      setCoverPicName(res.data.coverPicture);
     };
     fetchUser();
   }, [username]);
 
-  useEffect(() => {
-    const updateFile = async () => {
-      const data = new FormData();
-      const fileName = Date.now() + profilePicture.name;
-      data.append("name", fileName);
-      data.append("file", profilePicture);
-      try {
-        await axios.post("/upload", data);
-        user.profilePicture = fileName;
-        const updateInfo = {
-          "userId": user._id,
-          "profilePicture": fileName
-        };
-        await axios.put("/users/" + user._id, updateInfo);
-        window.location.reload();
-      } catch (err) { }
+  const uploadFile = async (imgFile, imgType, fileName) => {
+    const data = new FormData();
+    data.append("name", fileName);
+    data.append("file", imgFile);
+    try {
+      await axios.post("/upload", data);
+      let updateInfo = {
+        "userId": currentUser._id
+      };
+      updateInfo[imgType] = fileName;
+      console.log('updateInfo', updateInfo)
+      await axios.put("/users/" + currentUser._id, updateInfo);
+      const type = imgType === "coverPicture" ? 'UPDTAECPVER' : 'UPDTAEAVATAR'
+      dispatch({ type: type, payload: fileName })
+      console.log("Upload Successfully");
+    } catch (err) {
+      console.log(err);
     }
-    if (!!profilePicture) {
-      updateFile();
-    }
-  }, [profilePicture]);
-  useEffect(() => {
-    const updateFile = async () => {
-      const data = new FormData();
-      const fileName = Date.now() + coverPicture.name;
-      data.append("name", fileName);
-      data.append("file", coverPicture);
-      try {
-        await axios.post("/upload", data);
-        user.coverPicture = fileName;
-        const updateInfo = {
-          "userId": user._id,
-          "coverPicture": fileName
-        };
-        await axios.put("/users/" + user._id, updateInfo);
-        window.location.reload();
-      } catch (err) { }
-    }
-    if (!!coverPicture) {
-      updateFile();
-    }
-  }, [coverPicture]);
+  }
+
+  const isCurUser = () => {
+    // cannot have two users who share the same name
+    return currentUser.username === username;
+  }
 
   return (
     <>
@@ -80,55 +67,68 @@ export default function Profile() {
         <div className="profileRight">
           <div className="profileRightTop">
             <div className="coverAvatar">
-              <div className="changeCover">
+              <div className={`changeCover ${isCurUser() ? "changable" : ""}`}>
                 <img
-                  className="profileCoverImg"
-                  src={
-                    user.coverPicture
-                      ? PF + user.coverPicture
-                      : PF + "person/noCover.png"
-                  }
+                  className={`profileCoverImg`}
+                  src={PF + coverPicName}
                   alt=""
                 />
-                <input
-                  style={{ display: "none" }}
-                  type="file"
-                  id="cover"
-                  accept=".png,.jpeg,.jpg"
-                  onChange={(e) => { setCoverPicture(e.target.files[0]) }}
-                />
-                <label className="coverLabel" htmlFor="cover"></label>
+                {
+                  isCurUser() &&
+                  (<>
+                    <input
+                      style={{ display: "none" }}
+                      type="file"
+                      id="cover"
+                      accept=".png,.jpeg,.jpg"
+                      onChange={async (e) => {
+                        const file = e.target.files[0];
+                        const fileName = Date.now() + file.name
+                        await uploadFile(file, "coverPicture", fileName);
+                        setCoverPicName(file.name);
+
+                      }}
+                    />
+                    <label className="coverLabel" htmlFor="cover"></label>
+                  </>)
+                }
               </div>
 
-              <div className="changeAvatar">
+              <div className={`changeAvatar ${isCurUser() ? "changable" : ""}`}>
                 <img
-                  className="profileAvatarImg"
-                  src={
-                    user.profilePicture
-                      ? PF + user.profilePicture
-                      : PF + "person/noAvatar.png"
-                  }
+                  className={`profileAvatarImg`}
+                  src={PF + profilePicName}
                   alt=""
-                />
-                <input
-                  style={{ display: "none" }}
-                  type="file"
-                  id="profile"
-                  accept=".png,.jpeg,.jpg"
-                  onChange={(e) => { setProfilePicture(e.target.files[0]) }}
-                />
-                <label className="avatarLabel" htmlFor="avatar"></label>
+                />{
+                  isCurUser() &&
+                  (<>
+                    <input
+                      style={{ display: "none" }}
+                      type="file"
+                      id="avatar"
+                      accept=".png,.jpeg,.jpg"
+                      onChange={async (e) => {
+                        const file = e.target.files[0];
+                        const fileName = Date.now() + file.name
+                        await uploadFile(file, "profilePicture", fileName);
+                        setProfilePicName(fileName);
+                      }}
+                    />
+                    <label className="avatarLabel" htmlFor="avatar"></label>
+                  </>)
+                }
+
               </div>
             </div>
             <div className="profileInfo">
-              <h4 className="profileInfoName">{user.username}</h4>
-              <span className="profileInfoDesc">{user.desc}</span>
+              <h4 className="profileInfoName">{profileUser.username}</h4>
+              <span className="profileInfoDesc">{profileUser.desc}</span>
             </div>
           </div>
           <div className="profileRightBottom">
             <Feed searchTag={searchTag} homePage={homePage} timeLine={timeLine} username={username} profile={profile} />
             {/* <Feed username={username} profile={profile} /> */}
-            <Rightbar user={user} />
+            <Rightbar user={profileUser} />
           </div>
         </div>
       </div>
