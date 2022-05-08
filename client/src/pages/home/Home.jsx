@@ -3,20 +3,19 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Feed from "../../components/feed/Feed";
 import Rightbar from "../../components/rightbar/Rightbar";
 import "./home.css"
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-export default function Home() {
+export default function Home({socket}) {
   const [searchTag, setSearchTag] = useState(null);
-  const [homePage, setHomePage] = useState(false);
+  const [homePage, setHomePage] = useState(true);
   const [timeLine, setTimeLine] = useState(false);
-
 
   return (
     <>
-      <Topbar setSearchTag={setSearchTag} setHomePage = {setHomePage} setTimeLine = {setTimeLine} />
+      <Topbar setSearchTag={setSearchTag} setHomePage = {setHomePage} setTimeLine = {setTimeLine} socket={socket} />
       <div className="homeContainer">
         <Sidebar />
-        <Feed searchTag={searchTag} homePage ={homePage} timeLine ={timeLine} />
+        <Feed searchTag={searchTag} homePage ={homePage} timeLine ={timeLine} socket={socket}/>
         <Rightbar />
       </div>
     </>

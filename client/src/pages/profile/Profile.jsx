@@ -9,7 +9,7 @@ import { useParams } from "react-router";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
-export default function Profile() {
+export default function Profile({socket}) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [profileUser, setProfileUser] = useState({});
   const { user: currentUser, dispatch } = useContext(AuthContext);
@@ -30,7 +30,7 @@ export default function Profile() {
       const res = await axios.get(`/users?username=${username}`);
       setProfileUser(res.data);
       setProfilePicName(res.data.profilePicture ? res.data.profilePicture : "person/noAvatar.png");
-      setCoverPicName(res.data.coverPicture ? res.data.profilePicture : "person/noCover.png");
+      setCoverPicName(res.data.coverPicture ? res.data.coverPicture : "person/noCover.png");
     };
     fetchUser();
   }, [username, user]);
@@ -62,7 +62,7 @@ export default function Profile() {
 
   return (
     <>
-      <Topbar setSearchTag={setSearchTag} setHomePage={setHomePage} setTimeLine={setTimeLine} />
+      <Topbar setSearchTag={setSearchTag} setHomePage={setHomePage} setTimeLine={setTimeLine} socket={socket}/>
       <div className="profile">
         <Sidebar />
         <div className="profileRight">
@@ -127,9 +127,9 @@ export default function Profile() {
             </div>
           </div>
           <div className="profileRightBottom">
-            <Feed searchTag={searchTag} homePage={homePage} timeLine={timeLine} username={username} profile={profile} />
+            <Feed searchTag={searchTag} homePage={homePage} timeLine={timeLine} username={username} profile={profile} socket={socket}/>
             {/* <Feed username={username} profile={profile} /> */}
-            <Rightbar user={profileUser} setUser={setUser} />
+            <Rightbar user={profileUser} setUser={setUser} socket={socket}/>
           </div>
         </div>
       </div>

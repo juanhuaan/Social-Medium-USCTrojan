@@ -32,9 +32,32 @@ io.on("connection", (socket) => {
   //send and get message
   socket.on("sendMessage", ({ senderId, receiverId, text }) => {
     const user = getUser(receiverId);
-    io.to(user.socketId).emit("getMessage", {
+    io.to(user?.socketId).emit("getMessage", {
       senderId,
-      text,
+      text
+    });
+  });
+
+  //send and get notification
+  socket.on("sendPostNotification", ({ senderName, receiverId, type }) => {
+    const user = getUser(receiverId);
+    io.to(user?.socketId).emit("getPostNotification", {
+      senderName,
+      type
+    });
+  });
+
+  socket.on("sendFollowNotification", ({ senderName, receiverId }) => {
+    const user = getUser(receiverId);
+    io.to(user?.socketId).emit("getFollowNotification", {
+      senderName
+    });
+  });
+
+  socket.on("sendMessageNotification", ({ senderName, receiverId }) => {
+    const user = getUser(receiverId);
+    io.to(user?.socketId).emit("getMessageNotification", {
+      senderName
     });
   });
 

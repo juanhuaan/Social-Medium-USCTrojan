@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useContext, useEffect, useState, useRef } from "react";
 
-export function Comments({ postId, setcommentNum }) {
+export function Comments({ postId, postUserId, setcommentNum, socket }) {
 
     const commentContent = useRef()
     const [comments, setComments] = useState([])
@@ -84,6 +84,14 @@ export function Comments({ postId, setcommentNum }) {
                 
                 setcommentNum(prevCommentsNum => prevCommentsNum + 1);
                 console.log(comments)
+
+                socket.emit("sendPostNotification", {
+                    // senderId: user._id,
+                    senderName: user.username,
+                    receiverId: postUserId,
+                    type:"comment",
+                });
+
             } catch (err) {
                 console.error("Fail to post!")
             }

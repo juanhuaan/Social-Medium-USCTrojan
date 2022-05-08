@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import "./conversation.css";
 
 export default function Conversation({ conversation, currentUser }) {
+  //get friend info
   const [user, setUser] = useState(null);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 

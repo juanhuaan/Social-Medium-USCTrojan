@@ -9,8 +9,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { Add, Remove } from "@material-ui/icons";
 //import { Edit } from "client/src/components/edit/Edit.jsx";
 
-
-export default function Rightbar({ user, setUser }) {
+export default function Rightbar({ user, setUser, socket }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const username = useRef();
   const city = useRef();
@@ -22,7 +21,7 @@ export default function Rightbar({ user, setUser }) {
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useContext(AuthContext);
   const [followed, setFollowed] = useState(
-    currentUser.followings.includes(user?.id)
+    currentUser.followings.includes(user?._id)
   );
 
 
@@ -37,6 +36,7 @@ export default function Rightbar({ user, setUser }) {
       }
     };
     getFriends();
+    setFollowed(currentUser.followings.includes(user?._id));
   }, [user]);
 
   const submitHandler = async () => {
@@ -47,17 +47,18 @@ export default function Rightbar({ user, setUser }) {
       from: from.current.value || user.from,
       city: city.current.value || user.city,
       relationship: relationship.current.value || user.relationship,
-      password: password.current.value,
-      oldPassword: oldPassword.current.value
-
     };
-    console.log('relationship', relationship)
+    if (!!password.current.value && !!oldPassword.current.value) {
+      userEdit.password = password.current.value;
+      userEdit.oldPassword = oldPassword.current.value
+    }
+    console.log('userEdit', userEdit)
     const updatedUser = {
       ...user,
-      userEdit,
+      ...userEdit,
     }
     setUser(updatedUser)
-    console.log(userEdit.userId)
+    console.log(updatedUser)
     try {
       const res = await axios.put("/users/" + user._id, userEdit);
       console.log(res);
@@ -106,6 +107,13 @@ export default function Rightbar({ user, setUser }) {
         dispatch({ type: "FOLLOW", payload: user._id });
       }
       setFollowed(!followed);
+      if (!followed) {
+        socket.emit("sendFollowNotification", {
+          senderName: currentUser.username,
+          receiverId: user._id
+        });
+      }
+
     } catch (err) {
       console.error(err)
     }
@@ -120,7 +128,7 @@ export default function Rightbar({ user, setUser }) {
             <b>Pola Foster</b> and <b>3 other friends</b> have a birhday today.
           </span>
         </div>
-        <img className="rightbarAd" src="assets/ad.png" alt="" />
+        <img className="rightbarAd" src="assets/usc.png" alt="" />
         <h4 className="rightbarTitle">Online Friends</h4>
         <ul className="rightbarFriendList">
           {Users.map((u) => (
