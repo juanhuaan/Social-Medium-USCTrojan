@@ -29,8 +29,8 @@ export default function Profile() {
     const fetchUser = async () => {
       const res = await axios.get(`/users?username=${username}`);
       setProfileUser(res.data);
-      setProfilePicName(res.data.profilePicture);
-      setCoverPicName(res.data.coverPicture);
+      setProfilePicName(res.data.profilePicture ? res.data.profilePicture : "person/noAvatar.png");
+      setCoverPicName(res.data.coverPicture ? res.data.profilePicture : "person/noCover.png");
     };
     fetchUser();
   }, [username, user]);
@@ -129,7 +129,7 @@ export default function Profile() {
           <div className="profileRightBottom">
             <Feed searchTag={searchTag} homePage={homePage} timeLine={timeLine} username={username} profile={profile} />
             {/* <Feed username={username} profile={profile} /> */}
-            <Rightbar user={profileUser} setUser={setUser}/>
+            <Rightbar user={profileUser} setUser={setUser} />
           </div>
         </div>
       </div>
