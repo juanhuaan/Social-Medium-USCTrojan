@@ -42,11 +42,12 @@ export default function Feed({ username, searchTag, profile, timeLine, homePage,
         })
       );
     };
+    console.log(`profile name: ${username}, profile: ${profile}`,)
     if (!!username) {
       fetchPosts();
     }
 
-  }, [username]);
+  }, [username, profile]);
 
 
   // homepage feed 
@@ -71,7 +72,7 @@ export default function Feed({ username, searchTag, profile, timeLine, homePage,
   useEffect(() => {
     const fetchPosts = async () => {
       // const res = await axios.get("/posts/timeline/" + user._id);
-      const res = await axios.get("/posts/homepage/" + user._id);
+      const res = !!username ? await axios.get("/posts/profile/" + username) : await axios.get("/posts/homepage/" + user._id);
       let allPosts = res.data;
       if (!!searchTag) {
         allPosts = allPosts.filter(p => p.tags.includes(searchTag) || p.desc.includes(searchTag));
