@@ -40,6 +40,36 @@ const AuthReducer = (state, action) => {
           followings: state.user.followings.filter(following => following !== action.payload)
         }
       }
+    case 'UPDTAECPVER':
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          coverPicture: action.payload
+        }
+      }
+      case 'UPDTAEAVATAR':
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            profilePicture: action.payload
+          }
+        }
+      case 'UPDATEUSER':
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            //username: action.payload,
+            city: action.payload,
+            from: action.payload,
+            desc: action.payload,
+            relationship: action.payload,
+            password: action.password,
+            oldPassword: action.oldPassword
+          }
+        }
     default:
       return state
   }

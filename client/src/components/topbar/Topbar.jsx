@@ -14,9 +14,9 @@ export default function Topbar({ setSearchTag, setHomePage, setTimeLine, socket 
   const [open, setOpen] = useState(false);
 
   const logoutHandler = async () => {
-    console.log(user)
+    // console.log(user)
     dispatch({ type: "LOG_OUT" })
-    console.log(user)
+    // console.log(user)
     try {
       await axios.get("/");
     } catch (err) { console.log(err) }
@@ -102,8 +102,8 @@ export default function Topbar({ setSearchTag, setHomePage, setTimeLine, socket 
       </div>
       <div className="topbarRight">
         <div className="topbarLinks">
-          <span className="topbarLink" onClick= {HomepageHandler} >Homepage</span>
-          <span className="topbarLink" onClick= {TimelineHandle}>Timeline</span>
+          <span className="topbarLink" onClick={HomepageHandler} >Homepage</span>
+          <span className="topbarLink" onClick={TimelineHandle}>Timeline</span>
           <span className="topbarLink" onClick={logoutHandler}>Log Out</span>
         </div>
         <div className="topbarIcons" onClick={() => setOpen(!open)}>

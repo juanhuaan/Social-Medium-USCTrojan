@@ -79,8 +79,17 @@
   width: 100px;
   height: 100px;
   object-fit: cover;
-  border-radius: 5px;
+  border-radius: 100px;
+  margin-left: 100px;
+  margin-right: 100px;
+  
 }
+.rightbarFollowingName{
+  border-radius: 100px;
+  margin-left: 135px;
+  margin-right: 100px;
+}
+
 
 .rightbarFollowButton{
   margin-top: 30px;
@@ -99,4 +108,28 @@
 
 .rightbarFollowButton:focus{
   outline: none;
+}
+
+.profileForm {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.formInfo {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.editButton{
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: rgb(216, 84, 18);
+  font-weight: 500;
+  margin-right: 20px;
+  cursor: pointer;
+  color: white;
 }

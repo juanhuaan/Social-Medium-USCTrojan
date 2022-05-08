@@ -5,9 +5,10 @@ import {
   Room,
   EmojiEmotions,
   Cancel,
+  SettingsInputSvideoRounded,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, useEffect} from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 
@@ -17,7 +18,14 @@ export default function Share({ setPosts }) {
   const tags = useRef();
   const desc = useRef();
   const [file, setFile] = useState(null);
+  const [userchange, setUserchange] = useState(false);
 
+
+  useEffect(() => {
+    
+    setUserchange(true);
+   }, [user]);
+   
   const submitHandler = async (e) => {
     e.preventDefault();
     let tagsArr = [];

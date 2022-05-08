@@ -39,7 +39,7 @@ function App() {
         <Route path="/login">{user ? <Redirect to="/" /> : <Login />}</Route>
         <Route path="/register">{user ? <Redirect to="/" /> : <Register />}</Route>
         <Route path="/messenger">{!user ? <Redirect to="/" /> : <Messenger socket={socket}/>}</Route>
-        <Route path="/profile/:username"> <Profile socket={socket}/> </Route>
+        <Route path="/profile/:username"> {user ? <Profile socket={socket}/> : <Redirect to="/" />} </Route>
       </Switch>
     </Router>
   )

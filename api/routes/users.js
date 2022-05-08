@@ -7,6 +7,11 @@ router.put("/:id", async (req, res) => {
   if (req.body.userId === req.params.id || req.body.isAdmin) {
     if (req.body.password) {
       try {
+        // add old password compare
+        const user = await User.findById(req.params.id);
+        const validPassword = await bcrypt.compare(req.body.oldPassword, user.password)
+        !validPassword && res.status(400).json('wrong password')
+        // update newpassword
         const salt = await bcrypt.genSalt(10);
         req.body.password = await bcrypt.hash(req.body.password, salt);
       } catch (err) {
@@ -48,9 +53,14 @@ router.get("/", async (req, res) => {
     const user = userId
       ? await User.findById(userId)
       : await User.findOne({ username: username });
+    if(!!!user){
+      res.status(404).json(user)
+      return
+    }
     const { password, updatedAt, ...other } = user._doc;
     res.status(200).json(other);
   } catch (err) {
+    console.log(err)
     res.status(500).json(err);
   }
 });

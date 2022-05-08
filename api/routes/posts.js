@@ -156,6 +156,7 @@ router.post('/:postId/comments', async (req, res) => {
     await post.updateOne({ $push: { comments: commentId } });
 
     const user = await User.findById(newComment.userId);
+   
     res.status(200).json({
       commentId: commentId,
       avatar: user.profilePicture,

@@ -24,3 +24,18 @@ export const Unfollow = userId => ({
   type: 'UNFOLLOW',
   payload: userId
 })
+
+export const UpdateCover = userId => ({
+  type: 'UPDTAECPVER',
+  payload: userId
+})
+
+export const UpdateAvatar = userId => ({
+  type: 'UPDTAEAVATAR',
+  payload: userId
+})
+
+export const UpdateUser = userId => ({
+  type: 'UPDATEUSER',
+  payload: userId
+})
