@@ -2,6 +2,27 @@ const router = require('express').Router()
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
 
+router.get("/ifExistedUsername:username", async (req, res) => {
+  const username = req.params.username
+
+  try{
+    const isExisted = await User.findOne({username: username});
+    res.status(200).json(!!isExisted)
+  } catch(err){
+    console.log(err)
+  }
+})
+router.get("/ifExistedEmail:email", async (req, res) => {
+  const email = req.params.email
+
+  try{
+    const isExisted = await User.findOne({email: email});
+    res.status(200).json(!!isExisted)
+  } catch(err){
+    console.log(err)
+  }
+})
+
 //REGISTER
 router.post('/register', async (req, res) => {
   try {

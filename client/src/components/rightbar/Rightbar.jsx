@@ -49,29 +49,35 @@ export default function Rightbar({ user, setUser }) {
       relationship: relationship.current.value || user.relationship,
       password: password.current.value,
       oldPassword: oldPassword.current.value
-      
+
     };
+    console.log('relationship', relationship)
+    const updatedUser = {
+      ...user,
+      userEdit,
+    }
+    setUser(updatedUser)
     console.log(userEdit.userId)
     try {
-      const res = await axios.put("/users/"+ user._id, userEdit);
+      const res = await axios.put("/users/" + user._id, userEdit);
       console.log(res);
       dispatch({ type: 'UPDATEUSER', payload: userEdit })
       setUser(currentUser);
-      window.location.reload();
+      // window.location.reload();
       console.log("Upload Successfully");
-      
+
       desc.current.value = null;
       from.current.value = null;
       city.current.value = null;
       relationship.current.value = null;
-      if (password !== null) {
+      if (userEdit.password) {
         await logout();
       }
       password.current.value = null;
       oldPassword.current.value = null
-      
+
       //await logout();
-    }catch (err) {
+    } catch (err) {
       console.error(err)
     }
   }
@@ -85,7 +91,7 @@ export default function Rightbar({ user, setUser }) {
     } catch (err) { console.log(err) }
   };
 
- 
+
   const handleClick = async () => {
     try {
       if (followed) {
@@ -136,10 +142,10 @@ export default function Rightbar({ user, setUser }) {
         )}
 
 
-        {user.username === currentUser.username && 
+        {user.username === currentUser.username &&
           (
-           <div className="edit">
-            <form className="profileForm">    
+            <div className="edit">
+              <form className="profileForm">
                 {/* <div className = "formInfo">
                 <label for="username">Username: </label>
                     <input
@@ -149,74 +155,74 @@ export default function Rightbar({ user, setUser }) {
                     ref={username || user.username}
                     />
                 </div> */}
-                <div className = "formInfo">
-                <label for="description">Description: </label>
-                    <input
+                <div className="formInfo">
+                  <label for="description">Description: </label>
+                  <input
                     placeholder={(user.desc || "")}
                     type="text"
                     className="profileInput"
-                    ref = {desc || user.desc}
+                    ref={desc || user.desc}
                     autoComplete="text"
-                    />
+                  />
                 </div>
-                <div className = "formInfo">
-                <label for="City">City: </label>
-                    <input
-                    placeholder={ (user.city || "")}
+                <div className="formInfo">
+                  <label for="City">City: </label>
+                  <input
+                    placeholder={(user.city || "")}
                     type="text"
                     className="profileInput"
-                    ref = {city || currentUser.city}
+                    ref={city || currentUser.city}
                     autoComplete="text"
-                    />
+                  />
                 </div>
-                <div className = "formInfo">
-                <label for="From">From: </label>
-                    <input
-                    placeholder={ (user.from || "")}
+                <div className="formInfo">
+                  <label for="From">From: </label>
+                  <input
+                    placeholder={(user.from || "")}
                     type="text"
                     className="profileInput"
-                    ref = {from || user.from}
+                    ref={from || user.from}
                     autoComplete="text"
-                    />
+                  />
                 </div>
-                <div className = "formInfo">
-                <label for="relationship">Relationship: </label>
-                    <input
+                <div className="formInfo">
+                  <label for="relationship">Relationship: </label>
+                  <input
                     placeholder={"input 1/2 "}
                     type="text"
                     className="profileInput"
-                    ref = {relationship || user.relationship}
+                    ref={relationship || user.relationship}
                     autoComplete="text"
-                    />
+                  />
                 </div>
-                <div className = "formInfo">
-                <label for="oldPassword">old password: </label>
-                    <input
+                <div className="formInfo">
+                  <label for="oldPassword">old password: </label>
+                  <input
                     placeholder={"****** "}
                     type="password"
                     className="profileInput"
-                    ref = {oldPassword}
+                    ref={oldPassword}
                     autoComplete="text"
-                    />
+                  />
                 </div>
-                <div className = "formInfo">
-                <label for="password"> new password: </label>
-                    <input
+                <div className="formInfo">
+                  <label for="password"> new password: </label>
+                  <input
                     placeholder={"****** "}
                     type="password"
                     className="profileInput"
-                    ref = {password}
+                    ref={password}
                     autoComplete="text"
-                    />
+                  />
                 </div>
-            </form>
-        
-            <button className="editButton" type = "submit" onClick={ submitHandler }>
+              </form>
+
+              <button className="editButton" type="submit" onClick={submitHandler}>
                 <EditIcon fontSize="small" />
-            </button>
-          </div>)}
-  
-        
+              </button>
+            </div>)}
+
+
 
 
         <h4 className="rightbarTitle">User information</h4>
@@ -249,7 +255,7 @@ export default function Rightbar({ user, setUser }) {
             >
               <div className="rightbarFollowing">
                 <img
-                  src = {
+                  src={
                     friend.profilePicture
                       ? PF + friend.profilePicture
                       : PF + "person/noAvatar.png"
@@ -259,7 +265,7 @@ export default function Rightbar({ user, setUser }) {
                 />
                 <span className="rightbarFollowingName">{friend.username}</span>
               </div>
-              
+
             </Link>
           ))}
         </div>

@@ -1,12 +1,14 @@
 import axios from "axios";
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import "./register.css";
 // import { useHistory } from "react-router";
 import { Link, Grid } from "@material-ui/core";
 import { loginCall } from "../../apiCalls";
 import { AuthContext } from "../../context/AuthContext";
 
+
 export default function Register() {
+  const form = useRef();
   const username = useRef();
   const email = useRef();
   const password = useRef();
@@ -14,27 +16,64 @@ export default function Register() {
   // const history = useHistory();
   const { dispatch } = useContext(AuthContext);
 
-  const handleClick = async (e) => {
-    e.preventDefault();
-    if (passwordAgain.current.value !== password.current.value) {
-      passwordAgain.current.setCustomValidity("Passwords don't match!");
+  const passwordAgainConstraint = () => {
+    const ret = passwordAgain.current.value === password.current.value
+    if (!ret) {
+      passwordAgain.current.setCustomValidity("Passwords don't match!")
     } else {
-      const user = {
-        username: username.current.value,
-        email: email.current.value,
-        password: password.current.value,
-      };
-      try {
-        await axios.post("/auth/register", user);
-        loginCall(
-          { email: email.current.value, password: password.current.value },
-          dispatch
-        )
-        // history.push("/login");
+      passwordAgain.current.setCustomValidity("")
+    }
+    // form.current.reportValidity();
+    return ret
+  };
 
-      } catch (err) {
-        console.log(err);
-      }
+  const usernameConstraint = async () => {
+    const body = { username: username.current.value }
+    const ifExistedUsername = await axios.post(`/auth/ifExistedUsername`, body);
+    const ret = ifExistedUsername.data
+    console.log('ret', ret)
+    if (ret) {
+      username.current.setCustomValidity("Exsisting username!")
+    } else {
+      username.current.setCustomValidity("")
+    }
+    // form.current.reportValidity();
+    return !ret;
+  }
+
+  const emailConstraint = async () => {
+    const body = { email: email.current.value }
+    const ifExistedEmail = await axios.post(`/auth/ifExistedEmail`, body);
+    const ret = ifExistedEmail.data
+    if (ret) {
+      email.current.setCustomValidity("Exsisting email!")
+    } else {
+      email.current.setCustomValidity("")
+    }
+    // form.current.reportValidity();
+    return !ret;
+  }
+
+  const handleClick = async () => {
+    form.current.reportValidity();
+    const constraint = await usernameConstraint() && await emailConstraint() && passwordAgainConstraint() && form.current.checkValidity();
+
+    if (!constraint) {
+      return;
+    }
+    const user = {
+      username: username.current.value,
+      email: email.current.value,
+      password: password.current.value,
+    };
+    try {
+      await axios.post("/auth/register", user);
+      loginCall(
+        { email: email.current.value, password: password.current.value },
+        dispatch
+      )
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -42,13 +81,17 @@ export default function Register() {
     <div className="login">
       <div className="loginWrapper">
         <div className="loginLeft">
-          <h3 className="loginLogo">Lamasocial</h3>
+          <h3 className="loginLogo">Trojan Family</h3>
           <span className="loginDesc">
-            Connect with friends and the world around you on Lamasocial.
+            Connect with current students and alumni on Trojan Family.
           </span>
         </div>
         <div className="loginRight">
-          <form className="loginBox" onSubmit={handleClick}>
+          <form className="loginBox" onSubmit={(e) => {
+            e.preventDefault();
+          }}
+            ref={form}
+          >
             <input
               placeholder="Username"
               required
@@ -77,7 +120,10 @@ export default function Register() {
               className="loginInput"
               type="password"
             />
-            <button className="loginButton" type="submit">
+            <button className="loginButton" onClick={() => {
+              console.log("Submit Form!")
+              handleClick()
+            }}>
               Sign Up&Log in
             </button>
 
@@ -95,6 +141,6 @@ export default function Register() {
           </form>
         </div>
       </div>
-    </div>
+    </div >
   );
 }

@@ -1,20 +1,58 @@
-import { useContext, useRef } from "react";
+import axios from "axios";
+import { useContext, useRef, useEffect } from "react";
 import "./login.css";
 import { loginCall } from "../../apiCalls";
 import { AuthContext } from "../../context/AuthContext";
 import { CircularProgress, Link, Grid } from "@material-ui/core";
 
 export default function Login() {
+  const form = useRef();
   const email = useRef();
   const password = useRef();
-  const { isFetching, dispatch } = useContext(AuthContext);
+  const { isFetching, dispatch, error } = useContext(AuthContext);
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    loginCall(
-      { email: email.current.value, password: password.current.value },
-      dispatch
-    );
+
+
+  const emailConstraint = async () => {
+    const body = { email: email.current.value }
+    const ifExistedEmail = await axios.post(`/auth/ifExistedEmail`, body);
+    const ret = ifExistedEmail.data
+    if (!ret) {
+      email.current.setCustomValidity("This email is not existed!")
+    } else {
+      email.current.setCustomValidity("")
+    }
+    return ret;
+  }
+
+  const passwordConstraint = async () => {
+    try {
+      const body = { email: email.current.value, password: password.current.value }
+      await axios.post(`/auth/login`, body);
+      password.current.setCustomValidity("")
+      return true;
+    } catch (err) {
+      console.log(err)
+      password.current.setCustomValidity("This password is not correct!")
+      return false
+    }
+
+  }
+  const handleClick = async () => {
+    form.current.reportValidity();
+    const constraint = await emailConstraint() && await passwordConstraint() && form.current.checkValidity();
+    console.log(constraint)
+    if (!constraint) {
+      return;
+    }
+    try {
+      loginCall(
+        { email: email.current.value, password: password.current.value },
+        dispatch
+      )
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -27,7 +65,10 @@ export default function Login() {
           </span>
         </div>
         <div className="loginRight">
-          <form className="loginBox" onSubmit={handleClick}>
+          <form className="loginBox" onSubmit={(e) => {
+            e.preventDefault();
+          }}
+            ref={form}>
             <input
               placeholder="Email"
               type="email"
@@ -43,7 +84,11 @@ export default function Login() {
               className="loginInput"
               ref={password}
             />
-            <button className="loginButton" type="submit" disabled={isFetching}>
+            <button className="loginButton" disabled={isFetching}
+              onClick={() => {
+                console.log('onclick')
+                handleClick()
+              }}>
               {isFetching ? (
                 <CircularProgress color="white" size="20px" />
               ) : (
@@ -52,14 +97,14 @@ export default function Login() {
             </button>
             <Grid container>
               <Grid item xs>
-              <Link href="/register">
-            Forget password?
-          </Link>
+                <Link href="/register">
+                  Forget password?
+                </Link>
               </Grid>
               <Grid item>
-              <Link href="/register">
-            Create a New Account
-          </Link>
+                <Link href="/register">
+                  Create a New Account
+                </Link>
               </Grid>
             </Grid>
           </form>
