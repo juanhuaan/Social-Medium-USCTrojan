@@ -19,6 +19,7 @@ export default function Register() {
   const passwordAgainConstraint = () => {
     const ret = passwordAgain.current.value === password.current.value
     if (!ret) {
+      console.log("Passwords don't match!")
       passwordAgain.current.setCustomValidity("Passwords don't match!")
     } else {
       passwordAgain.current.setCustomValidity("")
@@ -33,6 +34,7 @@ export default function Register() {
     const ret = ifExistedUsername.data
     console.log('ret', ret)
     if (ret) {
+      console.log("Exsisting username!")
       username.current.setCustomValidity("Exsisting username!")
     } else {
       username.current.setCustomValidity("")
@@ -46,6 +48,7 @@ export default function Register() {
     const ifExistedEmail = await axios.post(`/auth/ifExistedEmail`, body);
     const ret = ifExistedEmail.data
     if (ret) {
+      console.log("Exsisting email!")
       email.current.setCustomValidity("Exsisting email!")
     } else {
       email.current.setCustomValidity("")

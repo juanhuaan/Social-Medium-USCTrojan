@@ -19,7 +19,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    socket?.emit("addUser", user._id);
+    socket?.emit("addUser", user?._id);
     socket?.on("getUsers", (users) => {
       // setOnlineUsers(
       //   user.followings.filter((f) => users.some((u) => u.userId === f))

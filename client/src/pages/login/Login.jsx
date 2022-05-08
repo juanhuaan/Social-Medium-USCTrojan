@@ -18,8 +18,10 @@ export default function Login() {
     const ifExistedEmail = await axios.post(`/auth/ifExistedEmail`, body);
     const ret = ifExistedEmail.data
     if (!ret) {
+      console.log('This email is not existed!')
       email.current.setCustomValidity("This email is not existed!")
     } else {
+      console.log('This email is existed!')
       email.current.setCustomValidity("")
     }
     return ret;
@@ -30,9 +32,10 @@ export default function Login() {
       const body = { email: email.current.value, password: password.current.value }
       await axios.post(`/auth/login`, body);
       password.current.setCustomValidity("")
+      console.log('password is right!')
       return true;
     } catch (err) {
-      console.log(err)
+      console.log('password is wrong!', err)
       password.current.setCustomValidity("This password is not correct!")
       return false
     }
