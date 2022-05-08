@@ -2,8 +2,8 @@ const router = require('express').Router()
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
 
-router.get("/ifExistedUsername:username", async (req, res) => {
-  const username = req.params.username
+router.post("/ifExistedUsername", async (req, res) => {
+  const username = req.body.username
 
   try{
     const isExisted = await User.findOne({username: username});
@@ -12,8 +12,9 @@ router.get("/ifExistedUsername:username", async (req, res) => {
     console.log(err)
   }
 })
-router.get("/ifExistedEmail:email", async (req, res) => {
-  const email = req.params.email
+router.post("/ifExistedEmail", async (req, res) => {
+  const email = req.body.email
+  console.log(email)
 
   try{
     const isExisted = await User.findOne({email: email});
@@ -51,12 +52,16 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email })
-    !user && res.status(404).json('user not found')
-
+    if(!user){
+      res.status(404).json('user not found')
+      return;
+    }
     const validPassword = await bcrypt.compare(req.body.password, user.password)
-    !validPassword && res.status(400).json('wrong password')
-
-    res.status(200).json(user)
+    if(validPassword){
+      res.status(200).json(user)
+    }else{
+      res.status(400).json('wrong password')
+    }
   } catch (err) {
     res.status(500).json(err)
   }
