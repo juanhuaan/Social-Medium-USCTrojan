@@ -1,13 +1,39 @@
 import "./message.css";
 import { format } from "timeago.js";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-export default function Message({ message, own }) {
+export default function Message({ message, senderId }) {
+
+  const { user : currentUser } = useContext(AuthContext);
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const res = await axios("/users?userId=" + senderId);
+        setUser(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    if(senderId !== currentUser._id) {
+      getUser();
+    }
+    
+  }, []);
+
   return (
-    <div className={own ? "message own" : "message"}>
+    <div className={(senderId === currentUser._id )? "message own" : "message"}>
       <div className="messageTop">
         <img
           className="messageImg"
-          src="https://images.pexels.com/photos/3686769/pexels-photo-3686769.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+          src= { user === null  ? (currentUser.profilePicture ? PF + currentUser.profilePicture : PF + "person/noAvatar.png") :  
+                                  (user.profilePicture ? PF + user.profilePicture  : PF + "person/noAvatar.png")
+                } 
           alt=""
         />
         <p className="messageText">{message.text}</p>

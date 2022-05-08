@@ -30,7 +30,7 @@ export default function Profile({socket}) {
       const res = await axios.get(`/users?username=${username}`);
       setProfileUser(res.data);
       setProfilePicName(res.data.profilePicture ? res.data.profilePicture : "person/noAvatar.png");
-      setCoverPicName(res.data.coverPicture ? res.data.profilePicture : "person/noCover.png");
+      setCoverPicName(res.data.coverPicture ? res.data.coverPicture : "person/noCover.png");
     };
     fetchUser();
   }, [username, user]);

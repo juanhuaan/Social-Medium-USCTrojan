@@ -21,14 +21,14 @@ export default function Messenger({socket}) {
 
   useEffect(() => {
     //socket = io("ws://localh ost:8900");
-    socket.on("getMessage", (data) => {
+    socket?.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
         text: data.text,
         createdAt: Date.now(),
       });
     });
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
     arrivalMessage &&
@@ -37,8 +37,8 @@ export default function Messenger({socket}) {
   }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
-    socket.emit("addUser", user._id);
-    socket.on("getUsers", (users) => {
+    socket?.emit("addUser", user._id);
+    socket?.on("getUsers", (users) => {
       setOnlineUsers(
         user.followings.filter((f) => users.some((u) => u.userId === f))
       );
@@ -87,6 +87,12 @@ export default function Messenger({socket}) {
       text: newMessage,
     });
 
+    socket.emit("sendMessageNotification", {
+      // senderId: user._id,
+      senderName: user.username,
+      receiverId: receiverId
+    });
+
     try {
       const res = await axios.post("/messages", message);
       setMessages([...messages, res.data]);
@@ -121,7 +127,7 @@ export default function Messenger({socket}) {
                 <div className="chatBoxTop">
                   {messages.map((m) => (
                     <div ref={scrollRef}>
-                      <Message message={m} own={m.sender === user._id} />
+                      <Message message={m} senderId={m.sender} />
                     </div>
                   ))}
                 </div>

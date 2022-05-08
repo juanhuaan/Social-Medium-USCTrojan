@@ -69,10 +69,10 @@ export default function Topbar({ setSearchTag, setHomePage, setTimeLine, socket 
     );
   };
 
-  const displayMessageNotification = ({ senderName, type }) => {
+  const displayMessageNotification = ({ senderName }) => {
   
     return (
-      <span className="Notification">{`${senderName} sent you new message.`}</span>
+      <span className="Notification">{`${senderName} sent you a new message.`}</span>
     );
   };
 

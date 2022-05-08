@@ -21,7 +21,7 @@ export default function Rightbar({ user, setUser, socket }) {
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useContext(AuthContext);
   const [followed, setFollowed] = useState(
-    currentUser.followings.includes(user?.id)
+    currentUser.followings.includes(user?._id)
   );
 
 
@@ -36,6 +36,7 @@ export default function Rightbar({ user, setUser, socket }) {
       }
     };
     getFriends();
+    setFollowed(currentUser.followings.includes(user?._id));
   }, [user]);
 
   const submitHandler = async () => {
