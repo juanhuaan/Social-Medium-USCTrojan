@@ -53,13 +53,13 @@ export default function Login() {
             <Grid container>
               <Grid item xs>
               <Link href="/register">
-            Forget password?
-          </Link>
+                Forget password?
+              </Link>
               </Grid>
               <Grid item>
               <Link href="/register">
-            Create a New Account
-          </Link>
+                Create a New Account
+              </Link>
               </Grid>
             </Grid>
           </form>

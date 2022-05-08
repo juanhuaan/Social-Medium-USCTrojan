@@ -5,7 +5,7 @@ import "./feed.css";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 
-export default function Feed({ username, searchTag, profile, timeLine, homePage}) {
+export default function Feed({ username, searchTag, profile, timeLine, homePage, socket}) {
   const [posts, setPosts] = useState([]);
   const { user } = useContext(AuthContext);
 
@@ -88,7 +88,7 @@ export default function Feed({ username, searchTag, profile, timeLine, homePage}
       <div className="feedWrapper">
         {(!username || username === user.username) && <Share setPosts = {setPosts}/>}
         {posts.map((p) => (
-          <Post key={p._id} post={p} setPosts = {setPosts}/>
+          <Post key={p._id} post={p} setPosts = {setPosts} socket={socket}/>
         ))}
       </div>
     </div>

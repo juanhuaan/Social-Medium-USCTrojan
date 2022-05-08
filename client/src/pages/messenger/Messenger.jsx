@@ -8,20 +8,20 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { io } from "socket.io-client";
 
-export default function Messenger() {
+export default function Messenger({socket}) {
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const socket = useRef();
+  //const socket = useRef();
   const { user } = useContext(AuthContext);
   const scrollRef = useRef();
 
   useEffect(() => {
-    socket.current = io("ws://localhost:8900");
-    socket.current.on("getMessage", (data) => {
+    //socket = io("ws://localh ost:8900");
+    socket.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
         text: data.text,
@@ -37,8 +37,8 @@ export default function Messenger() {
   }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
-    socket.current.emit("addUser", user._id);
-    socket.current.on("getUsers", (users) => {
+    socket.emit("addUser", user._id);
+    socket.on("getUsers", (users) => {
       setOnlineUsers(
         user.followings.filter((f) => users.some((u) => u.userId === f))
       );
@@ -81,7 +81,7 @@ export default function Messenger() {
       (member) => member !== user._id
     );
 
-    socket.current.emit("sendMessage", {
+    socket.emit("sendMessage", {
       senderId: user._id,
       receiverId,
       text: newMessage,

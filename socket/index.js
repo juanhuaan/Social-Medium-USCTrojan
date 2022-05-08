@@ -38,6 +38,22 @@ io.on("connection", (socket) => {
     });
   });
 
+  //send and get notification
+  socket.on("sendPostNotification", ({ senderName, receiverId, type }) => {
+    const user = getUser(receiverId);
+    io.to(user?.socketId).emit("getPostNotification", {
+      senderName,
+      type,
+    });
+  });
+
+  socket.on("sendFollowNotification", ({ senderName, receiverId }) => {
+    const user = getUser(receiverId);
+    io.to(user?.socketId).emit("getFollowNotification", {
+      senderName
+    });
+  });
+
   //when disconnect
   socket.on("disconnect", () => {
     console.log("a user disconnected!");

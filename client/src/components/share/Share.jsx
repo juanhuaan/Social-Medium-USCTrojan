@@ -78,7 +78,7 @@ export default function Share({ setPosts }) {
               ref={desc}
             />
             <div className="shareOption">
-              <Label htmlColor="#CD5C5C" className="shareIcon" />
+              <Label htmlColor="#5C94CD" className="shareIcon" />
               <input
                 placeholder={"# tags (comma is a must): weather, mood, study, travel, cat, ..."}
                 type="text"

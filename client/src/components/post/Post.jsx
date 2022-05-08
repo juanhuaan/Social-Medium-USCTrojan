@@ -10,7 +10,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { Comments } from "../comments/Comments";
 import { Label } from "@material-ui/icons";
 
-export default function Post({ post, setPosts }) {
+export default function Post({ post, setPosts, socket }) {
     const [like, setLike] = useState(post.likes.length);
     const [isLiked, setIsLiked] = useState(false);
     const [commentNum, setcommentNum] = useState(post.comments.length);
@@ -51,7 +51,16 @@ export default function Post({ post, setPosts }) {
         } catch (err) { }
         setLike(isLiked ? like - 1 : like + 1);
         setIsLiked(!isLiked);
+        if(!isLiked) {
+            socket.emit("sendPostNotification", {
+                // senderId: user._id,
+                senderName: currentUser.username,
+                receiverId: post.userId,
+                type:"like"
+            });
+        }
     };
+
     const formatting = (tags) => {
         let tagStr = ""
         for (let tag of tags) {
@@ -92,10 +101,10 @@ export default function Post({ post, setPosts }) {
                 </div>
 
                 {(post.tags[0] !== "") && <div className="postSub">
-                    <Label htmlColor="#CD5C5C" className="postIcon" />
-                    <span className="postText" fontSize="60%" > {formatting(post?.tags)}</span>
+                    <Label htmlColor="#5C94CD" className="tagIcon" />
+                    <span className="tagText"> {formatting(post?.tags)}</span>
                 </div>}
-                <hr className="shareHr" />
+                {/* <hr className="shareHr" /> */}
                 <div className="postBottom">
                     <div className="postBottomLeft">
                         <img
@@ -136,7 +145,9 @@ export default function Post({ post, setPosts }) {
                 <Comments
                     className="comment"
                     postId={post._id}
+                    postUserId={post.userId}
                     setcommentNum = {setcommentNum}
+                    socket = {socket}
                 >
                 </Comments>
             </Collapse>

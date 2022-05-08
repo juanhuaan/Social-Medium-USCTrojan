@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { Add, Remove } from "@material-ui/icons";
 
-export default function Rightbar({ user }) {
+export default function Rightbar({ user, socket }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useContext(AuthContext);
@@ -41,6 +41,13 @@ export default function Rightbar({ user }) {
         dispatch({ type: "FOLLOW", payload: user._id });
       }
       setFollowed(!followed);
+      if(!followed) {
+        socket.emit("sendFollowNotification", {
+            senderName: currentUser.username,
+            receiverId: user._id
+        });
+      }
+
     } catch (err) {
     }
   };
@@ -54,7 +61,7 @@ export default function Rightbar({ user }) {
             <b>Pola Foster</b> and <b>3 other friends</b> have a birhday today.
           </span>
         </div>
-        <img className="rightbarAd" src="assets/ad.png" alt="" />
+        <img className="rightbarAd" src="assets/usc.png" alt="" />
         <h4 className="rightbarTitle">Online Friends</h4>
         <ul className="rightbarFriendList">
           {Users.map((u) => (

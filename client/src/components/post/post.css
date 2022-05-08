@@ -125,3 +125,18 @@
   margin-left: 50px;
   margin-bottom: 10px;
 }
+
+.tagText{
+  font-size: 15px;
+  color: rgb(88, 83, 83);
+  border-radius: 10%;
+  object-fit: cover;
+  margin-top: 3px;
+}
+
+.tagIcon{
+  display: flex;
+  font-size: 18px;
+  margin-right: 3px;
+  margin-bottom: 15px;
+}

@@ -95,6 +95,43 @@
   cursor: pointer;
 }
 
+.notifications {
+  width: 250px;
+  border: 1px solid gray;
+  border-radius: 2px;
+  position: absolute;
+  top: 50px;
+  right: 100px;
+  background-color: white;
+  color: black;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.Notification {
+  font-weight: bolder;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.nButton {
+  background-color: #1877f2;
+  /* display: inline; */
+  white-space: nowrap;
+  text-align: center;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  width: 80%;
+  padding: 5px;
+  margin-top: 10px;
+  box-shadow: none;
+  cursor: pointer;
+}
+
 @media screen and (max-width: 768px)  {
   .topbarLink{
     display: none;

@@ -8,7 +8,7 @@ import axios from "axios";
 import { useParams } from "react-router";
 
 
-export default function Profile() {
+export default function Profile({socket}) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [user, setUser] = useState({});
   const [profilePicture, setProfilePicture] = useState(null);
@@ -74,7 +74,7 @@ export default function Profile() {
 
   return (
     <>
-      <Topbar setSearchTag={setSearchTag} setHomePage={setHomePage} setTimeLine={setTimeLine} />
+      <Topbar setSearchTag={setSearchTag} setHomePage={setHomePage} setTimeLine={setTimeLine} socket={socket}/>
       <div className="profile">
         <Sidebar />
         <div className="profileRight">
@@ -126,9 +126,9 @@ export default function Profile() {
             </div>
           </div>
           <div className="profileRightBottom">
-            <Feed searchTag={searchTag} homePage={homePage} timeLine={timeLine} username={username} profile={profile} />
+            <Feed searchTag={searchTag} homePage={homePage} timeLine={timeLine} username={username} profile={profile} socket={socket}/>
             {/* <Feed username={username} profile={profile} /> */}
-            <Rightbar user={user} />
+            <Rightbar user={user} socket={socket}/>
           </div>
         </div>
       </div>
