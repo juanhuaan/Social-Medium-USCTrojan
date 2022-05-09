@@ -16,6 +16,14 @@
   margin-right: 10px;
 }
 
+.messageMyImg {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-left: 10px;
+}
+
 .messageText{
     padding: 10px;
     border-radius: 20px;

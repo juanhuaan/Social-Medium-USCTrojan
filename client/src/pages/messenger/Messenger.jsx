@@ -44,7 +44,7 @@ export default function Messenger({socket}) {
         user.followings.filter((f) => users.some((u) => u.userId === f))
       );
     });
-  }, [user]);
+  }, [user, socket]);
 
   useEffect(() => {
     const getConversations = async () => {
@@ -107,12 +107,22 @@ export default function Messenger({socket}) {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // search function
-  // useEffect(() => {
-
-  //   setConversations(conversations.filter(conversation));
-
-  // }, [searchTag]);
+  //search friend
+  useEffect(() => {
+    const fetchFriends = async () => {
+      // const res = await axios.get("/posts/timeline/" + user._id);
+      const res = await axios.get("/conversations/" + user._id);
+      let allFriends = res.data;
+      if (!!searchTag) {
+        allFriends = allFriends.filter(p => p.senderName.includes(searchTag) || p.receiverName.includes(searchTag));
+      }
+      setConversations(allFriends);
+    };
+    if (!!user) {
+      fetchFriends();
+    }
+    // console.log('change searchTag', searchTag)
+  }, [searchTag]);
 
   return (
     <>

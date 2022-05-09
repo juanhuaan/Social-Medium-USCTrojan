@@ -47,17 +47,18 @@ export default function Rightbar({ user, setUser, socket }) {
       from: from.current.value || user.from,
       city: city.current.value || user.city,
       relationship: relationship.current.value || user.relationship,
-      password: password.current.value,
-      oldPassword: oldPassword.current.value
-
     };
-    console.log('relationship', relationship)
+    if (!!password.current.value && !!oldPassword.current.value) {
+      userEdit.password = password.current.value;
+      userEdit.oldPassword = oldPassword.current.value
+    }
+    console.log('userEdit', userEdit)
     const updatedUser = {
       ...user,
-      userEdit,
+      ...userEdit,
     }
     setUser(updatedUser)
-    console.log(userEdit.userId)
+    console.log(updatedUser)
     try {
       const res = await axios.put("/users/" + user._id, userEdit);
       console.log(res);
@@ -105,17 +106,18 @@ export default function Rightbar({ user, setUser, socket }) {
         });
 
         await axios.post("/conversations/", {
-          senderId: currentUser._id,
-          receiverId: user._id
+          members: [currentUser._id, user._id],
+          senderName: currentUser.username,
+          receiverName: user.username
         });
 
         dispatch({ type: "FOLLOW", payload: user._id });
       }
       setFollowed(!followed);
-      if(!followed) {
+      if (!followed) {
         socket.emit("sendFollowNotification", {
-            senderName: currentUser.username,
-            receiverId: user._id
+          senderName: currentUser.username,
+          receiverId: user._id
         });
       }
 

@@ -29,14 +29,19 @@ export default function Message({ message, senderId }) {
   return (
     <div className={(senderId === currentUser._id )? "message own" : "message"}>
       <div className="messageTop">
-        <img
-          className="messageImg"
-          src= { user === null  ? (currentUser.profilePicture ? PF + currentUser.profilePicture : PF + "person/noAvatar.png") :  
-                                  (user.profilePicture ? PF + user.profilePicture  : PF + "person/noAvatar.png")
-                } 
-          alt=""
-        />
+        {(senderId !== currentUser._id ) &&
+          <img
+            className="messageImg"
+            src= { (user?.profilePicture ? PF + user.profilePicture  : PF + "person/noAvatar.png") } 
+            alt=""
+          />}
         <p className="messageText">{message.text}</p>
+        {(senderId === currentUser._id ) &&
+          <img
+            className="messageMyImg"
+            src= { (currentUser.profilePicture ? PF + currentUser.profilePicture : PF + "person/noAvatar.png") } 
+            alt=""
+          />}
       </div>
       <div className="messageBottom">{format(message.createdAt)}</div>
     </div>

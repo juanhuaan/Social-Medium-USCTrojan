@@ -5,18 +5,18 @@ import "./feed.css";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 
-export default function Feed({ username, searchTag, profile, timeLine, homePage, socket}) {
+export default function Feed({ username, searchTag, profile, timeLine, homePage, socket }) {
   const [posts, setPosts] = useState([]);
   const { user } = useContext(AuthContext);
 
   // console.log('Feed username', username)
   // console.log('Feed searchTag', searchTag)
-  
+
   // timeLine 
   useEffect(() => {
     const fetchPosts = async () => {
       const res = await axios.get("/posts/timeline/" + user._id);
-        //: await axios.get("/posts/homepage/" + user._id);
+      //: await axios.get("/posts/homepage/" + user._id);
 
       setPosts(
         res.data.sort((p1, p2) => {
@@ -24,16 +24,17 @@ export default function Feed({ username, searchTag, profile, timeLine, homePage,
         })
       );
     };
-    if(timeLine === true) fetchPosts();
+    if (timeLine === true) fetchPosts();
   }, [timeLine]);
 
   // profile  
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = username
-            ? await axios.get("/posts/profile/" + username)
-            : await axios.get("/posts/timeline/" + user._id);
-        //: await axios.get("/posts/homepage/" + user._id);
+      const res = await axios.get("/posts/profile/" + username)
+      // const res = username
+      //       ? await axios.get("/posts/profile/" + username)
+      //       : await axios.get("/posts/timeline/" + user._id);
+      //: await axios.get("/posts/homepage/" + user._id);
 
       setPosts(
         res.data.sort((p1, p2) => {
@@ -41,17 +42,22 @@ export default function Feed({ username, searchTag, profile, timeLine, homePage,
         })
       );
     };
-    fetchPosts();
+    console.log(`profile name: ${username}, profile: ${profile}`,)
+    if (!!username) {
+      fetchPosts();
+    }
+
   }, [username, profile]);
 
 
   // homepage feed 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = username
-        ? await axios.get("/posts/profile/" + username)
-       // : await axios.get("/posts/timeline/" + user._id);
-        : await axios.get("/posts/homepage/" + user._id);
+      const res = await axios.get("/posts/homepage/" + user._id);
+      // const res = username
+      //   ? await axios.get("/posts/profile/" + username)
+      //   // : await axios.get("/posts/timeline/" + user._id);
+      //   : await axios.get("/posts/homepage/" + user._id);
 
       setPosts(
         res.data.sort((p1, p2) => {
@@ -59,19 +65,20 @@ export default function Feed({ username, searchTag, profile, timeLine, homePage,
         })
       );
     };
-    if(homePage === true)fetchPosts();
+    if (homePage === true) fetchPosts();
   }, [username, user._id, homePage]);
 
   // search function
   useEffect(() => {
     const fetchPosts = async () => {
       // const res = await axios.get("/posts/timeline/" + user._id);
-      // const res = await axios.get("/posts/homepage/" + user._id);
-      
-      let searchedPosts = await posts.filter(p => p.tags.includes(searchTag) || p.desc.includes(searchTag));
-      
+      const res = !!username ? await axios.get("/posts/profile/" + username) : await axios.get("/posts/homepage/" + user._id);
+      let allPosts = res.data;
+      if (!!searchTag) {
+        allPosts = allPosts.filter(p => p.tags.includes(searchTag) || p.desc.includes(searchTag));
+      }
       setPosts(
-        searchedPosts.sort((p1, p2) => {
+        allPosts.sort((p1, p2) => {
           return new Date(p2.createdAt) - new Date(p1.createdAt);
         })
       );
@@ -85,9 +92,9 @@ export default function Feed({ username, searchTag, profile, timeLine, homePage,
   return (
     <div className="feed">
       <div className="feedWrapper">
-        {((!username || username === user.username) && ( profile!== true)) && <Share setPosts = {setPosts}/> }
+        {((!username || username === user.username) && (profile !== true)) && <Share setPosts={setPosts} />}
         {posts.map((p) => (
-          <Post key={p._id} post={p} setPosts = {setPosts} socket={socket}/>
+          <Post key={p._id} post={p} setPosts={setPosts} socket={socket} />
         ))}
       </div>
     </div>
