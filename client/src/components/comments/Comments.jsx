@@ -85,13 +85,15 @@ export function Comments({ postId, postUserId, setcommentNum, socket }) {
                 setcommentNum(prevCommentsNum => prevCommentsNum + 1);
                 console.log(comments)
 
-                socket.emit("sendPostNotification", {
-                    // senderId: user._id,
-                    senderName: user.username,
-                    receiverId: postUserId,
-                    type:"comment",
-                });
-
+                if(postUserId !== user._id) {
+                    socket.emit("sendPostNotification", {
+                        // senderId: user._id,
+                        senderName: user.username,
+                        receiverId: postUserId,
+                        type:"comment"
+                    });
+                }
+                
             } catch (err) {
                 console.error("Fail to post!")
             }

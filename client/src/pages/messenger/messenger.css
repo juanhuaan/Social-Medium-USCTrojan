@@ -4,7 +4,10 @@
 }
 
 .chatMenu {
-  flex: 3.5;
+  flex: 3;
+  width: 100%;
+  -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+  box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
 }
 
 .chatMenuInput {
@@ -12,6 +15,10 @@
   padding: 10px 0;
   border: none;
   border-bottom: 1px solid gray;
+}
+
+.chatMenuInput:focus {
+  outline: none;
 }
 
 .chatBox {
