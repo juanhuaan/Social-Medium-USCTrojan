@@ -23,7 +23,8 @@ export default function Rightbar({ user, setUser, socket }) {
   const [followed, setFollowed] = useState(
     currentUser.followings.includes(user?._id)
   );
-
+  const [open, setOpen] = useState(false);
+  const [openNew, setOpenNew] = useState(false);
 
 
   useEffect(() => {
@@ -39,6 +40,33 @@ export default function Rightbar({ user, setUser, socket }) {
     setFollowed(currentUser.followings.includes(user?._id));
   }, [user]);
 
+  const submitHandlerPassword = async () => {
+    const userEdit = {
+      userId: user._id
+    }
+    if (password.current.value !== undefined && oldPassword.current.value !== undefined) {
+      userEdit.password = password.current.value;
+      userEdit.oldPassword = oldPassword.current.value
+    }
+    const updatedUser = {
+      ...user,
+      ...userEdit,
+    }
+    setUser(updatedUser)
+    try {
+      const res = await axios.put("/users/" + user._id, userEdit);
+      console.log(res);
+      dispatch({ type: 'UPDATEUSER', payload: userEdit })
+      setUser(currentUser);
+      console.log("Upload Successfully");
+      await logout();
+      password.current.value = null;
+      oldPassword.current.value = null
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   const submitHandler = async () => {
     const userEdit = {
       //username: username.current.value || user.username,
@@ -48,10 +76,7 @@ export default function Rightbar({ user, setUser, socket }) {
       city: city.current.value || user.city,
       relationship: relationship.current.value || user.relationship,
     };
-    if (!!password.current.value && !!oldPassword.current.value) {
-      userEdit.password = password.current.value;
-      userEdit.oldPassword = oldPassword.current.value
-    }
+    console.log(userEdit)
     console.log('userEdit', userEdit)
     const updatedUser = {
       ...user,
@@ -64,20 +89,12 @@ export default function Rightbar({ user, setUser, socket }) {
       console.log(res);
       dispatch({ type: 'UPDATEUSER', payload: userEdit })
       setUser(currentUser);
-      // window.location.reload();
       console.log("Upload Successfully");
-
+      setOpen(false);
       desc.current.value = null;
       from.current.value = null;
       city.current.value = null;
       relationship.current.value = null;
-      if (userEdit.password) {
-        await logout();
-      }
-      password.current.value = null;
-      oldPassword.current.value = null
-
-      //await logout();
     } catch (err) {
       console.error(err)
     }
@@ -160,85 +177,94 @@ export default function Rightbar({ user, setUser, socket }) {
         {user.username === currentUser.username &&
           (
             <div className="edit">
-              <form className="profileForm">
-                {/* <div className = "formInfo">
-                <label for="username">Username: </label>
-                    <input
-                    placeholder={ "Username: " + user.username }
-                    className="profileInput"
-                    type="text"
-                    ref={username || user.username}
-                    />
-                </div> */}
-                <div className="formInfo">
-                  <label for="description">Description: </label>
-                  <input
-                    placeholder={(user.desc || "")}
-                    type="text"
-                    className="profileInput"
-                    ref={desc || user.desc}
-                    autoComplete="text"
-                  />
-                </div>
-                <div className="formInfo">
-                  <label for="City">City: </label>
-                  <input
-                    placeholder={(user.city || "")}
-                    type="text"
-                    className="profileInput"
-                    ref={city || currentUser.city}
-                    autoComplete="text"
-                  />
-                </div>
-                <div className="formInfo">
-                  <label for="From">From: </label>
-                  <input
-                    placeholder={(user.from || "")}
-                    type="text"
-                    className="profileInput"
-                    ref={from || user.from}
-                    autoComplete="text"
-                  />
-                </div>
-                <div className="formInfo">
-                  <label for="relationship">Relationship: </label>
-                  <input
-                    placeholder={"input 1/2 "}
-                    type="text"
-                    className="profileInput"
-                    ref={relationship || user.relationship}
-                    autoComplete="text"
-                  />
-                </div>
-                <div className="formInfo">
-                  <label for="oldPassword">old password: </label>
-                  <input
-                    placeholder={"****** "}
-                    type="password"
-                    className="profileInput"
-                    ref={oldPassword}
-                    autoComplete="text"
-                  />
-                </div>
-                <div className="formInfo">
-                  <label for="password"> new password: </label>
-                  <input
-                    placeholder={"****** "}
-                    type="password"
-                    className="profileInput"
-                    ref={password}
-                    autoComplete="text"
-                  />
-                </div>
-              </form>
-
-              <button className="editButton" type="submit" onClick={submitHandler}>
-                <EditIcon fontSize="small" />
+              <button className ="rightbarEditButton" onClick={() => setOpen(!open)}>
+               <EditIcon/> Edit Profile
               </button>
+              {open && 
+              <div>
+                <form className="profileForm">
+                  <div className="formInfo">
+                    <label for="description">Description: </label>
+                    <input
+                      placeholder={(user.desc || "")}
+                      type="text"
+                      className="profileInput"
+                      ref={desc || user.desc}
+                      autoComplete="text"
+                    />
+                  </div>
+                  <div className="formInfo">
+                    <label for="City">City: </label>
+                    <input
+                      placeholder={(user.city || "")}
+                      type="text"
+                      className="profileInput"
+                      ref={city || currentUser.city}
+                      autoComplete="text"
+                    />
+                  </div>
+                  <div className="formInfo">
+                    <label for="From">From: </label>
+                    <input
+                      placeholder={(user.from || "")}
+                      type="text"
+                      className="profileInput"
+                      ref={from || user.from}
+                      autoComplete="text"
+                    />
+                  </div>
+                  <div className="formInfo">
+                 
+                  
+                    <label for="relationship">Relationship: </label>
+                    <input
+                      placeholder={(user.relationship || "")}
+                      type="text"
+                      className="profileInput"
+                      ref={relationship || currentUser.relationship}
+                      autoComplete="text"
+                    />
+                  </div>
+                </form>
+                <button className="editButton" type="submit" onClick={submitHandler}>
+                submit
+                </button>
+              </div>
+              }
+              <button className ="rightbarFollowButton" onClick={() => setOpenNew(!openNew)}>
+               <EditIcon/> Change Password
+              </button>
+              {openNew && 
+                <div>
+                <form className="profileForm">
+                <div className="formInfo">
+                    <label for="oldPassword">old password: </label>
+                    <input
+                      placeholder={"****** "}
+                      type="password"
+                      className="profileInput"
+                      ref={oldPassword}
+                      autoComplete="text"
+                    />
+                  </div>
+                  <div className="formInfo">
+                    <label for="password"> new password: </label>
+                    <input
+                      placeholder={"****** "}
+                      type="password"
+                      className="profileInput"
+                      ref={password}
+                      autoComplete="text"
+                    />
+                  </div>
+                  
+                </form>
+                <button className="editButton" type="submit"  onClick={submitHandlerPassword}>
+                submit
+                </button>
+                </div>
+              }
             </div>)}
-
-
-
 
         <h4 className="rightbarTitle">User information</h4>
         <div className="rightbarInfo">
@@ -253,14 +279,11 @@ export default function Rightbar({ user, setUser, socket }) {
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">Relationship:</span>
             <span className="rightbarInfoValue">
-              {user.relationship === 1
-                ? "Single"
-                : user.relationship === 2
-                  ? "Married"
-                  : "-"}
+              {user.relationship }
             </span>
           </div>
         </div>
+        
         <h4 className="rightbarTitle">User friends</h4>
         <div className="rightbarFollowings">
           {friends.map((friend) => (
