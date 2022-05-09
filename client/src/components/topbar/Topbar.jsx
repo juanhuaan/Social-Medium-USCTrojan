@@ -47,7 +47,7 @@ export default function Topbar({ setSearchTag, setHomePage, setTimeLine, socket 
   }, [socket]);
 
 
-  console.log(postNotifications)
+  //console.log(postNotifications)
 
   const displayPostNotification = ({ senderName, type }) => {
     let action;
@@ -96,7 +96,7 @@ export default function Topbar({ setSearchTag, setHomePage, setTimeLine, socket 
           <input
             placeholder="Try searching for people, topics, or keywords"
             className="searchInput"
-            onChange={(e) => { setSearchTag(e.target.value) }}
+            onChange={(e) => { setSearchTag && setSearchTag(e.target.value) }}
           />
         </div>
       </div>

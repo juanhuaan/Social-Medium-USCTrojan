@@ -103,6 +103,12 @@ export default function Rightbar({ user, setUser, socket }) {
         await axios.put(`/users/${user._id}/follow`, {
           userId: currentUser._id,
         });
+
+        await axios.post("/conversations/", {
+          senderId: currentUser._id,
+          receiverId: user._id
+        });
+
         dispatch({ type: "FOLLOW", payload: user._id });
       }
       setFollowed(!followed);

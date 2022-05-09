@@ -51,14 +51,16 @@ export default function Post({ post, setPosts, socket }) {
         } catch (err) { }
         setLike(isLiked ? like - 1 : like + 1);
         setIsLiked(!isLiked);
-        if(!isLiked) {
-            socket.emit("sendPostNotification", {
-                // senderId: user._id,
-                senderName: currentUser.username,
-                receiverId: post.userId,
-                type:"like"
-            });
-        }
+        if(post.userId !== currentUser._id) {
+            if(!isLiked) {
+                socket.emit("sendPostNotification", {
+                    // senderId: user._id,
+                    senderName: currentUser.username,
+                    receiverId: post.userId,
+                    type:"like"
+                });
+            }
+        } 
     };
 
     const formatting = (tags) => {

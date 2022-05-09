@@ -18,6 +18,7 @@ export default function Messenger({socket}) {
   //const socket = useRef();
   const { user } = useContext(AuthContext);
   const scrollRef = useRef();
+  const [searchTag, setSearchTag] = useState(null);
 
   useEffect(() => {
     //socket = io("ws://localh ost:8900");
@@ -106,13 +107,20 @@ export default function Messenger({socket}) {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // search function
+  // useEffect(() => {
+
+  //   setConversations(conversations.filter(conversation));
+
+  // }, [searchTag]);
+
   return (
     <>
       <Topbar />
       <div className="messenger">
         <div className="chatMenu">
           <div className="chatMenuWrapper">
-            <input placeholder="Search for friends" className="chatMenuInput" />
+            <input placeholder="Search for friends" className="chatMenuInput" onChange={(e) => { setSearchTag(e.target.value) }}/>
             {conversations.map((c) => (
               <div onClick={() => setCurrentChat(c)}>
                 <Conversation conversation={c} currentUser={user} />
