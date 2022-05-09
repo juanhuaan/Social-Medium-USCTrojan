@@ -106,6 +106,22 @@
   cursor: pointer;
 }
 
+.rightbarEditButton{
+  width: 45%;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  border: none;
+  background-color: #1872f2;
+  color: white;
+  border-radius: 5px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
 .rightbarFollowButton:focus{
   outline: none;
 }
@@ -116,7 +132,9 @@
   margin-bottom: 10px;
   cursor: pointer;
 }
+
 .formInfo {
+  
   display: flex;
   flex-direction: column;
   margin-bottom: 5px;
@@ -124,12 +142,13 @@
 }
 
 .editButton{
+  justify-content: center;
   border: none;
-  padding: 10px;
+  padding: 7px;
   border-radius: 5px;
-  background-color: rgb(216, 84, 18);
+  background-color: rgb(59, 141, 59);
   font-weight: 500;
-  margin-right: 20px;
+  margin-left: 85%;
   cursor: pointer;
   color: white;
 }
