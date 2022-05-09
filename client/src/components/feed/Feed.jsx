@@ -75,7 +75,7 @@ export default function Feed({ username, searchTag, profile, timeLine, homePage,
       const res = !!username ? await axios.get("/posts/profile/" + username) : await axios.get("/posts/homepage/" + user._id);
       let allPosts = res.data;
       if (!!searchTag) {
-        allPosts = allPosts.filter(p => p.tags.includes(searchTag) || p.desc.includes(searchTag));
+        allPosts = allPosts.filter(p => p.tags.includes(searchTag) || p.desc.includes(searchTag) || p.userName.includes(searchTag));
       }
       setPosts(
         allPosts.sort((p1, p2) => {

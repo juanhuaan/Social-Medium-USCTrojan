@@ -33,6 +33,7 @@ export default function Share({ setPosts }) {
     let newArr = tagsArr.map(val => val.toLowerCase().trim())
     const newPost = {
       userId: user._id,
+      userName: user.username,
       desc: desc.current.value,
       tags: newArr
     };

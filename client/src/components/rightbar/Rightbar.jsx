@@ -46,7 +46,7 @@ export default function Rightbar({ user, setUser, socket }) {
     }
     if (password.current.value !== undefined && oldPassword.current.value !== undefined) {
       userEdit.password = password.current.value;
-      userEdit.oldPassword = oldPassword.current.value
+      userEdit.oldPassword = oldPassword.current.value;
     }
     const updatedUser = {
       ...user,
@@ -61,7 +61,7 @@ export default function Rightbar({ user, setUser, socket }) {
       console.log("Upload Successfully");
       await logout();
       password.current.value = null;
-      oldPassword.current.value = null
+      oldPassword.current.value = null;
     } catch (err) {
       console.error(err)
     }
@@ -122,11 +122,20 @@ export default function Rightbar({ user, setUser, socket }) {
           userId: currentUser._id,
         });
 
-        await axios.post("/conversations/", {
+        const exist = await axios.get(`/conversations/find/${currentUser._id}/${user._id}`, {
           members: [currentUser._id, user._id],
           senderName: currentUser.username,
           receiverName: user.username
         });
+
+        console.log(exist);
+        if(!exist) {
+          await axios.post("/conversations/", {
+            members: [currentUser._id, user._id],
+            senderName: currentUser.username,
+            receiverName: user.username
+          });
+        }
 
         dispatch({ type: "FOLLOW", payload: user._id });
       }
@@ -173,6 +182,23 @@ export default function Rightbar({ user, setUser, socket }) {
           </button>
         )}
 
+        <h4 className="rightbarTitle">User information</h4>
+        <div className="rightbarInfo">
+          <div className="rightbarInfoItem">
+            <span className="rightbarInfoKey">City:</span>
+            <span className="rightbarInfoValue">{user.city}</span>
+          </div>
+          <div className="rightbarInfoItem">
+            <span className="rightbarInfoKey">From:</span>
+            <span className="rightbarInfoValue">{user.from}</span>
+          </div>
+          <div className="rightbarInfoItem">
+            <span className="rightbarInfoKey">Relationship:</span>
+            <span className="rightbarInfoValue">
+              {user.relationship }
+            </span>
+          </div>
+        </div>
 
         {user.username === currentUser.username &&
           (
@@ -231,7 +257,7 @@ export default function Rightbar({ user, setUser, socket }) {
                 </button>
               </div>
               }
-              <button className ="rightbarFollowButton" onClick={() => setOpenNew(!openNew)}>
+              <button className ="rightbarEditButton" onClick={() => setOpenNew(!openNew)}>
                <EditIcon/> Change Password
               </button>
               {openNew && 
@@ -266,23 +292,7 @@ export default function Rightbar({ user, setUser, socket }) {
               }
             </div>)}
 
-        <h4 className="rightbarTitle">User information</h4>
-        <div className="rightbarInfo">
-          <div className="rightbarInfoItem">
-            <span className="rightbarInfoKey">City:</span>
-            <span className="rightbarInfoValue">{user.city}</span>
-          </div>
-          <div className="rightbarInfoItem">
-            <span className="rightbarInfoKey">From:</span>
-            <span className="rightbarInfoValue">{user.from}</span>
-          </div>
-          <div className="rightbarInfoItem">
-            <span className="rightbarInfoKey">Relationship:</span>
-            <span className="rightbarInfoValue">
-              {user.relationship }
-            </span>
-          </div>
-        </div>
+        
         
         <h4 className="rightbarTitle">User friends</h4>
         <div className="rightbarFollowings">
