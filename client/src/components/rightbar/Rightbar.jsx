@@ -207,8 +207,6 @@ export default function Rightbar({ user, setUser, socket }) {
                     />
                   </div>
                   <div className="formInfo">
-                 
-                  
                     <label for="relationship">Relationship: </label>
                     <input
                       placeholder={(user.relationship || "")}
@@ -250,7 +248,6 @@ export default function Rightbar({ user, setUser, socket }) {
                       autoComplete="text"
                     />
                   </div>
-                  
                 </form>
                 <button className="editButton" type="submit"  onClick={submitHandlerPassword}>
                 submit
