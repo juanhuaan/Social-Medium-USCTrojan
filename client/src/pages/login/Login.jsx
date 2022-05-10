@@ -3,7 +3,8 @@ import { useContext, useRef, useEffect } from "react";
 import "./login.css";
 import { loginCall } from "../../apiCalls";
 import { AuthContext } from "../../context/AuthContext";
-import { CircularProgress, Link, Grid } from "@material-ui/core";
+import { CircularProgress, Grid } from "@material-ui/core";
+import { Link } from "react-router-dom"
 
 export default function Login() {
   const form = useRef();
@@ -61,13 +62,16 @@ export default function Login() {
   return (
     <div className="login">
       <div className="loginWrapper">
-        <div className="loginLeft">
-          <h3 className="loginLogo">Trojan Family</h3>
-          <span className="loginDesc">
-            Connect with current students and alumni on Trojan Family.
-          </span>
-        </div>
-        <div className="loginRight">
+        <header className="loginHeader">
+          <div className="sameline">
+            <span className="loginLogo1">USC</span>
+            <span className="loginLogo2">Trojan</span>
+          </div>
+          {/* <span className="loginDesc">
+            Connect with current students and alumni on USCTrojan.
+          </span> */}
+        </header>
+        <div className="loginBody">
           <form className="loginBox" onSubmit={(e) => {
             e.preventDefault();
           }}
@@ -98,19 +102,24 @@ export default function Login() {
                 "Log In"
               )}
             </button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="/register">
+            
+          </form>
+          <Grid container>
+            <Grid item xs>
+              <div className="forgetLink">
+                <Link to="/register" >
                   Forget password?
                 </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/register">
+              </div>
+            </Grid>
+            <Grid item>
+              <div className="newAccountLink">
+                <Link to="/register" >
                   Create a New Account
                 </Link>
-              </Grid>
+              </div>
             </Grid>
-          </form>
+          </Grid>
         </div>
       </div>
     </div>

@@ -71,11 +71,14 @@ export function Comments({ postId, postUserId, setcommentNum, socket }) {
             window.alert("You are not login!")
         } else {
             try {
+                console.log(user._id)
+                console.log(commentContent.current.value)
                 const res = await axios.post(`/posts/${postId}/comments`, {
                     userId: user._id ?? null,
+                    userName: user.username ?? null,
                     desc: commentContent.current.value
                 })
-                //console.log(res.data);
+                console.log(res);
                 commentContent.current.value = null;
 
                 setComments(prevComments => {
@@ -136,7 +139,7 @@ export function Comments({ postId, postUserId, setcommentNum, socket }) {
                     multiline
                     variant="standard"
                 ></TextField>
-                <Button onClick={postComment}>Comment</Button>
+                <Button onClick={postComment} color = 'error'>Comment</Button>
             </Box>
             {isFetchingComments &&
                 <Box
@@ -178,7 +181,7 @@ export function Comments({ postId, postUserId, setcommentNum, socket }) {
                             </div>
                             <div>
                                 {comment.username === user.username &&
-                                    <Button size="small" color="primary" onClick={(e) =>deleteHandler(comment.commentId, comment.userId)}>
+                                    <Button size="small" color="error" onClick={(e) =>deleteHandler(comment.commentId, comment.userId)}>
                                         <DeleteIcon fontSize="small" />
                                     </Button>}
                             </div>

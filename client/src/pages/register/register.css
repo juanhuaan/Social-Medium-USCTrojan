@@ -1,48 +1,80 @@
-.login {
+.register {
   width: 100vw;
   height: 100vh;
   background-color: #f0f2f5;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: radial-gradient(ellipse at center, #d00 0%, #600 100%);
+  /* flex-direction: column; */
 }
 
-.loginWrapper {
+.registerWrapper {
   width: 70%;
-  height: 70%;
+  height: 90%;
   display: flex;
+  flex-direction: column;
 }
 
-.loginLeft,
-.loginRight {
-  flex: 1;
+.registerHeader {
+  /* flex: 1; */
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
-.loginLogo {
+.registerBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.registerLogo1 {
   font-size: 50px;
   font-weight: 800;
-  color: #1775ee;
+  color: #ffc004;
   margin-bottom: 10px;
 }
 
-.loginDesc {
+.registerLogo2 {
+  font-size: 50px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.registerDesc {
   font-size: 24px;
 }
 
-.loginBox{
-    height: 400px;
+a {
+  margin-top: 20px;
+  color: #ffe372;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+}
+
+a:hover{
+  text-decoration: underline;
+}
+.registerBox{
+    height: 350px;
     padding: 20px;
-    background-color: white;
-    border-radius: 10px;
+    /* background-color: white; */
+    /* border-radius: 10px; */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    width: 300px;
+    background: radial-gradient(ellipse at center, #d00 0%, #600 100%);
 }
 
-.loginInput{
+.registerInput{
     height: 50px;
     border-radius: 10px;
     border: 1px solid gray;
@@ -50,27 +82,49 @@
     padding-left: 20px;
 }
 
-.loginInput:focus{
+.registerInput:focus{
     outline: none;
 }
 
-.loginButton{
-    height: 50px;
-    border-radius: 10px;
+.registerButton{
+    /* height: 50px;
     border: none;
-    background-color: #1775ee;
+    background: #500;
     color: white;
     font-size: 20px;
     font-weight: 500;
+    cursor: pointer; */
+
+    background: #500;
+    background: rgba(0,0,0,0.2);
+    border: none;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    color: #fff;
     cursor: pointer;
-}
-
-.loginForgot{
+    font-size: 1.25rem;
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 0.75rem 0;
     text-align: center;
-    color: #1775ee;
+    width: 60%; 
+    margin-right: 0px;
+}
+.registerButton:hover{
+  background: #400;
+  background: rgba(0,0,0,0.3);
+}
+.registerButton:active{
+  background: #b00;
+  background: rgba(187,0,0,0.8);
 }
 
-.loginRegisterButton{
+
+.registerForgot{
+    text-align: center;
+    color: #990001;
+}
+
+.registerRegisterButton{
     width: 60%;
     align-self: center;
     height: 50px;
@@ -82,3 +136,4 @@
     font-weight: 500;
     cursor: pointer;
 }
+

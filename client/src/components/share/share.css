@@ -83,11 +83,11 @@
     border: none;
     padding: 7px;
     border-radius: 5px;
-    background-color: rgb(59, 141, 59);
+    background-color: #ffc004;
     font-weight: 500;
     margin-right: 20px;
     cursor: pointer;
-    color: white;
+    color: black;
 }
 
 .shareImgContainer{

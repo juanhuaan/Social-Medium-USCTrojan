@@ -25,6 +25,7 @@ export default function Rightbar({ user, setUser, socket }) {
   );
   const [open, setOpen] = useState(false);
   const [openNew, setOpenNew] = useState(false);
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
 
   useEffect(() => {
@@ -151,6 +152,16 @@ export default function Rightbar({ user, setUser, socket }) {
       console.error(err)
     }
   };
+
+  // useEffect(() => {
+  //   socket?.emit("addUser", currentUser._id);
+  //   socket?.on("getUsers", (users) => {
+  //     setOnlineUsers(
+  //       currentUser.followings.filter((f) => users.some((u) => u.userId === f))
+  //     );
+  //     console.log(onlineUsers)
+  //   });
+  // }, []);
 
   const HomeRightbar = () => {
     return (
