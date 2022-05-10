@@ -45,10 +45,12 @@
 }
 
 .rightbarInfo{
-  margin-bottom: 30px;
+ 
+  margin-bottom: 10px;
 }
 
 .rightbarInfoItem{
+
   margin-bottom: 10px;
 }
 
@@ -106,6 +108,10 @@
   cursor: pointer;
 }
 
+.rightbarFollowButton:focus{
+  outline: none;
+}
+
 .rightbarEditButton{
   width: 45%;
   margin-top: 30px;
@@ -122,9 +128,7 @@
   cursor: pointer;
 }
 
-.rightbarFollowButton:focus{
-  outline: none;
-}
+
 
 .profileForm {
   display: flex;

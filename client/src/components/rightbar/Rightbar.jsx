@@ -158,7 +158,7 @@ export default function Rightbar({ user, setUser, socket }) {
         <div className="birthdayContainer">
           <img className="birthdayImg" src="assets/gift.png" alt="" />
           <span className="birthdayText">
-            <b>Pola Foster</b> and <b>3 other friends</b> have a birhday today.
+            <b>Shaoen Qin</b> and <b>3 other friends</b> have a birhday today.
           </span>
         </div>
         <img className="rightbarAd" src="assets/usc.png" alt="" />
@@ -182,7 +182,7 @@ export default function Rightbar({ user, setUser, socket }) {
           </button>
         )}
 
-        <h4 className="rightbarTitle">User information</h4>
+      <h4 className="rightbarTitle">User information</h4>
         <div className="rightbarInfo">
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">City:</span>
@@ -203,6 +203,7 @@ export default function Rightbar({ user, setUser, socket }) {
         {user.username === currentUser.username &&
           (
             <div className="edit">
+             
               <button className ="rightbarEditButton" onClick={() => setOpen(!open)}>
                <EditIcon/> Edit Profile
               </button>
@@ -255,6 +256,8 @@ export default function Rightbar({ user, setUser, socket }) {
                 </button>
               </div>
               }
+              
+              
               <button className ="rightbarEditButton" onClick={() => setOpenNew(!openNew)}>
                <EditIcon/> Change Password
               </button>
@@ -287,8 +290,10 @@ export default function Rightbar({ user, setUser, socket }) {
                 </button>
                 </div>
               }
+              
             </div>)}
 
+      
         
         
         <h4 className="rightbarTitle">User friends</h4>
