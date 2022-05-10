@@ -24,7 +24,7 @@ function App() {
       // setOnlineUsers(
       //   user.followings.filter((f) => users.some((u) => u.userId === f))
       // );
-      console.log(users)
+      // console.log(users)
     });
   }, [socket, user]);
 

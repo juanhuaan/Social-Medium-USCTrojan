@@ -106,18 +106,14 @@ export default function Login() {
           </form>
           <Grid container>
             <Grid item xs>
-              <div className="forgetLink">
-                <Link to="/register" >
+                <Link to="/register" className="forgetLink">
                   Forget password?
                 </Link>
-              </div>
             </Grid>
             <Grid item>
-              <div className="newAccountLink">
-                <Link to="/register" >
+                <Link to="/register" className="newAccountLink">
                   Create a New Account
                 </Link>
-              </div>
             </Grid>
           </Grid>
         </div>

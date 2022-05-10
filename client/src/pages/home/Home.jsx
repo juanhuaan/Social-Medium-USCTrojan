@@ -16,7 +16,7 @@ export default function Home({socket}) {
       <div className="homeContainer">
         <Sidebar />
         <Feed searchTag={searchTag} homePage ={homePage} timeLine ={timeLine} socket={socket}/>
-        <Rightbar />
+        <Rightbar socket={socket}/>
       </div>
     </>
   );

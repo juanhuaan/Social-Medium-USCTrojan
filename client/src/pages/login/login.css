@@ -90,7 +90,7 @@
     box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
     color: #fff;
     cursor: pointer;
-    font-size: 1.25rem;
+    font-size: 1rem;
     margin: 0 auto;
     max-width: 100%;
     padding: 0.75rem 0;
@@ -113,7 +113,7 @@
     color: #990001;
 }
 
-.loginloginButton{
+/* .loginloginButton{
     width: 60%;
     align-self: center;
     height: 50px;
@@ -124,7 +124,7 @@
     font-size: 20px;
     font-weight: 500;
     cursor: pointer;
-}
+} */
 
 .forgetLink{
   margin-left: 360px;

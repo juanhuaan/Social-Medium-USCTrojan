@@ -4,6 +4,7 @@
   background-color: #990001;
   display: flex;
   align-items: center;
+  /* position: fixed; */
   position: sticky;
   top: 0;
   z-index: 999;

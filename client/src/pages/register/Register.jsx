@@ -142,7 +142,7 @@ export default function Register() {
               alignItems="center"
               justifyContent="center"
             >
-              <Link to='/login' >
+              <Link to='/login' className="loginLink">
                 Log into Account
               </Link>
             </Grid>

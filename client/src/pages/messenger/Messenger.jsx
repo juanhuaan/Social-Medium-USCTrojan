@@ -44,8 +44,10 @@ export default function Messenger({socket}) {
         user.followings.filter((f) => users.some((u) => u.userId === f))
       );
     });
+    
   }, [user, socket]);
 
+  // console.log(onlineUsers)
   useEffect(() => {
     const getConversations = async () => {
       try {
@@ -114,7 +116,8 @@ export default function Messenger({socket}) {
       const res = await axios.get("/conversations/" + user._id);
       let allFriends = res.data;
       if (!!searchTag) {
-        allFriends = allFriends.filter(p => p.senderName.includes(searchTag) || p.receiverName.includes(searchTag));
+        allFriends = allFriends.filter(p => p.senderName.toLowerCase().includes(searchTag.toLowerCase()) || 
+                                            p.receiverName.toLowerCase().includes(searchTag.toLowerCase()));
       }
       setConversations(allFriends);
     };
@@ -132,7 +135,7 @@ export default function Messenger({socket}) {
           <div className="chatMenuWrapper">
             <input placeholder="Search for friends" className="chatMenuInput" onChange={(e) => { setSearchTag(e.target.value) }}/>
             {conversations.map((c) => (
-              <div onClick={() => setCurrentChat(c)}>
+              <div onClick={() => setCurrentChat(c)} key = {c._id}>
                 <Conversation conversation={c} currentUser={user} />
               </div>
             ))}
@@ -144,7 +147,7 @@ export default function Messenger({socket}) {
               <>
                 <div className="chatBoxTop">
                   {messages.map((m) => (
-                    <div ref={scrollRef}>
+                    <div ref={scrollRef} key = {m._id}>
                       <Message message={m} senderId={m.sender} />
                     </div>
                   ))}

@@ -25,13 +25,15 @@ export default function Rightbar({ user, setUser, socket }) {
   );
   const [open, setOpen] = useState(false);
   const [openNew, setOpenNew] = useState(false);
+  const [onlineUserIds, setOnlineUserIds] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
 
-
+  console.log(socket)
   useEffect(() => {
     const getFriends = async () => {
       try {
-        const friendList = await axios.get("/users/friends/" + user._id);
+        
+        const friendList = user ? await axios.get("/users/friends/" + user?._id) : await axios.get("/users/friends/" + currentUser._id);
         setFriends(friendList.data);
       } catch (err) {
         console.log(err);
@@ -39,7 +41,7 @@ export default function Rightbar({ user, setUser, socket }) {
     };
     getFriends();
     setFollowed(currentUser.followings.includes(user?._id));
-  }, [user]);
+  }, [user, currentUser]);
 
   const submitHandlerPassword = async () => {
     const userEdit = {
@@ -129,9 +131,8 @@ export default function Rightbar({ user, setUser, socket }) {
           receiverName: user.username
         });
 
-        console.log(exist);
-        if(!exist) {
-          await axios.post("/conversations/", {
+        if(!exist.data) {
+          const res = await axios.post("/conversations/", {
             members: [currentUser._id, user._id],
             senderName: currentUser.username,
             receiverName: user.username
@@ -153,16 +154,33 @@ export default function Rightbar({ user, setUser, socket }) {
     }
   };
 
-  // useEffect(() => {
-  //   socket?.emit("addUser", currentUser._id);
-  //   socket?.on("getUsers", (users) => {
-  //     setOnlineUsers(
-  //       currentUser.followings.filter((f) => users.some((u) => u.userId === f))
-  //     );
-  //     console.log(onlineUsers)
-  //   });
-  // }, []);
+  useEffect(() =>  {
+    socket?.emit("addUser", currentUser._id);
+    socket?.on("getUsers", (users) => {
+       setOnlineUserIds(
+        currentUser.followings.filter((f) => users.some((u) => u.userId === f))
+      );
+    });
+    
+  }, [socket, currentUser]);
 
+  console.log(onlineUserIds)
+
+  // useEffect(() => {
+  //   const getFriends = async () => {
+  //     const res = await axios.get("/users/friends/" + currentUser);
+  //     setFriends(res.data);
+  //   };
+
+  //   getFriends();
+  // }, [currentId]);
+
+  useEffect(() => {
+    setOnlineUsers(friends.filter((f) => onlineUserIds.includes(f._id)));
+  }, [friends, onlineUserIds]);
+
+  console.log(friends)
+  console.log(onlineUsers)
   const HomeRightbar = () => {
     return (
       <>
@@ -175,8 +193,8 @@ export default function Rightbar({ user, setUser, socket }) {
         <img className="rightbarAd" src="assets/usc.png" alt="" />
         <h4 className="rightbarTitle">Online Friends</h4>
         <ul className="rightbarFriendList">
-          {Users.map((u) => (
-            <Online key={u.id} user={u} />
+          {onlineUsers.map((u) => (
+            <Online key={u._id} user={u} />
           ))}
         </ul>
       </>
@@ -193,23 +211,7 @@ export default function Rightbar({ user, setUser, socket }) {
           </button>
         )}
 
-        <h4 className="rightbarTitle">User information</h4>
-        <div className="rightbarInfo">
-          <div className="rightbarInfoItem">
-            <span className="rightbarInfoKey">City:</span>
-            <span className="rightbarInfoValue">{user.city}</span>
-          </div>
-          <div className="rightbarInfoItem">
-            <span className="rightbarInfoKey">From:</span>
-            <span className="rightbarInfoValue">{user.from}</span>
-          </div>
-          <div className="rightbarInfoItem">
-            <span className="rightbarInfoKey">Relationship:</span>
-            <span className="rightbarInfoValue">
-              {user.relationship }
-            </span>
-          </div>
-        </div>
+        
 
         {user.username === currentUser.username &&
           (
@@ -302,7 +304,24 @@ export default function Rightbar({ user, setUser, socket }) {
                 </div>
               }
             </div>)}
-
+        
+        <h4 className="rightbarTitle">User information</h4>
+        <div className="rightbarInfo">
+          <div className="rightbarInfoItem">
+            <span className="rightbarInfoKey">City:</span>
+            <span className="rightbarInfoValue">{user.city}</span>
+          </div>
+          <div className="rightbarInfoItem">
+            <span className="rightbarInfoKey">From:</span>
+            <span className="rightbarInfoValue">{user.from}</span>
+          </div>
+          <div className="rightbarInfoItem">
+            <span className="rightbarInfoKey">Relationship:</span>
+            <span className="rightbarInfoValue">
+              {user.relationship }
+            </span>
+          </div>
+        </div>
         
         
         <h4 className="rightbarTitle">User friends</h4>
@@ -311,6 +330,7 @@ export default function Rightbar({ user, setUser, socket }) {
             <Link
               to={"/profile/" + friend.username}
               style={{ textDecoration: "none" }}
+              key={friend._id}
             >
               <div className="rightbarFollowing">
                 <img

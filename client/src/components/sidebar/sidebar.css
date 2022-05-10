@@ -4,6 +4,7 @@
   overflow-y: scroll;
   position: sticky;
   top: 50px;
+  background-color: #fffcf4
 }
 
 ::-webkit-scrollbar {
