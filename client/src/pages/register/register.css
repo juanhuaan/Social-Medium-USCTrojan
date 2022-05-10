@@ -145,6 +145,7 @@ a:hover{
   text-decoration: none;
   font-weight: 500;
   display: flex;
+  margin-left: 210px;
 }
 
 .loginLink:hover {
