@@ -13,8 +13,8 @@ change the url like http:localhost:8800 to a fixed aws url
 
 ```bash
 # for api and socker:
-docker build -t 'your_iamge_name:tag' ./api
-docker build -t 'your_iamge_name:tag' ./chat
+docker build -t 'docker-id/your_repository_name_for_api:tag' ./api
+docker build -t 'docker-id/your_repository_name_for_socket:tag' ./socket
 
 # for app:
 cd client
@@ -23,7 +23,21 @@ yarn build
 cd ..
 mv client/build app
 cd app
-docker build -t 'your_iamge_name:tag' .
+docker build -t 'docker-id/your_repository_name_for_app:tag' .
+
+docker push 'docker-id/your_repository_name_for_api:tag'
+eb init -p docker application-name-for-api
+eb create enviroment-name-for-api
+
+docker push 'docker-id/your_repository_name_for_socket:tag'
+eb init -p docker application-name-for-socket
+eb create enviroment-name-for-socket
+
+docker push 'docker-id/your_repository_name_for_app:tag'
+eb init -p docker application-name-for-app
+eb create enviroment-name-for-app
+
+
 ```
 
 ```

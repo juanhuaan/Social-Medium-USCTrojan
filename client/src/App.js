@@ -15,7 +15,7 @@ function App() {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    setSocket(io("ws://localhost:8900"));
+    setSocket(io("http://chat-env-v6.eba-zsgzc3my.us-west-2.elasticbeanstalk.com"));
   }, []);
 
   useEffect(() => {
