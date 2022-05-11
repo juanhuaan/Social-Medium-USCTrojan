@@ -1,4 +1,4 @@
-# Social-Medium-New
+# Social-Medium-USCTrojan
 
 # Connect to MongoDB
 
