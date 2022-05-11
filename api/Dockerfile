@@ -9,6 +9,6 @@ RUN yarn install
 
 COPY . .
 
-EXPOSE 8803
+EXPOSE 8800
 
 CMD ["index.js"]
