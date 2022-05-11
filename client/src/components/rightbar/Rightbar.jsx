@@ -179,15 +179,15 @@ export default function Rightbar({ user, setUser, socket }) {
     setOnlineUsers(friends.filter((f) => onlineUserIds.includes(f._id)));
   }, [friends, onlineUserIds]);
 
-  console.log(friends)
-  console.log(onlineUsers)
+  // console.log(friends)
+  // console.log(onlineUsers)
   const HomeRightbar = () => {
     return (
       <>
         <div className="birthdayContainer">
           <img className="birthdayImg" src="assets/gift.png" alt="" />
           <span className="birthdayText">
-            <b>Shaoen Qin</b> and <b>3 other friends</b> have a birhday today.
+            <b>Chinsy</b> and <b>1 other friends</b> have a birhday today.
           </span>
         </div>
         <img className="rightbarAd" src="assets/usc.png" alt="" />
