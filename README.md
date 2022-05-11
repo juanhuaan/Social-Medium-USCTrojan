@@ -12,7 +12,7 @@ change the url like http:localhost:8800 to a fixed aws url
 ```bash
 # for api and socker:
 docker build -t 'your_iamge_name:tag' ./api
-docker build -t 'your_iamge_name:tag' ./chat
+docker build -t 'your_iamge_name:tag' ./socket
 
 # for app:
 cd client
