@@ -69,12 +69,12 @@ MONGO_URL = mongodb+srv://ee547:XGhH1KuAj1c00ooB@cluster0.knprx.mongodb.net/EE54
 ## client
 
 - public: manage the picture storage of this platform
-- src: <div>component: store different components </div> <div>context: a global statement management</div> <div>pages: various pages on the brower</div> <div>apiCalls: dipatch functions for reducer</div><div>App.js: manage url of different webpage</div><div>index.js: set up and execute the backend server on port 3000</div>
+- src: <div>component: store different components </div> <div>context: a global statement management</div> <div>pages: various pages on the brower</div> <div>apiCalls: dipatch functions for reducer</div><div>App.js: manage url of different webpage</div><div>index.js: set up and execute the client server on port 3000</div>
 - Dockerfile: the step of deployment
 
 ## socket
 
-- index.js: connect and disconnet socket.io and set and get notification and message.
+- index.js: connect and disconnet socket.io and set and get notification and message. set up and execute the socket on port 8900
 - Dockerfile: the step of deployment
 
 ```
