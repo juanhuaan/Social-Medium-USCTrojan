@@ -10,6 +10,9 @@ import {
   Event,
   School,
 } from "@material-ui/icons";
+import SportsTennisIcon from '@material-ui/icons/SportsTennis';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import { Users } from "../../dummyData";
 import CloseFriend from "../closeFriend/CloseFriend";
 import { Link } from "react-router-dom";
@@ -57,20 +60,20 @@ export default function Sidebar() {
             <span className="sidebarListItemText">Groups</span>
           </li>
           <li className="sidebarListItem">
-            <Bookmark className="sidebarIcon" />
-            <span className="sidebarListItemText">Bookmarks</span>
+            <MailOutlineIcon className="sidebarIcon" />
+            <span className="sidebarListItemText">Email</span>
           </li>
           <li className="sidebarListItem">
-            <HelpOutline className="sidebarIcon" />
-            <span className="sidebarListItemText">Questions</span>
+            <MenuBookIcon className="sidebarIcon" />
+            <span className="sidebarListItemText">Libraries</span>
           </li>
           <li className="sidebarListItem">
             <WorkOutline className="sidebarIcon" />
             <span className="sidebarListItemText">Jobs</span>
           </li>
           <li className="sidebarListItem">
-            <Event className="sidebarIcon" />
-            <span className="sidebarListItemText">Events</span>
+            <SportsTennisIcon className="sidebarIcon" />
+            <span className="sidebarListItemText">Sports</span>
           </li>
           <li className="sidebarListItem">
             <School className="sidebarIcon" />

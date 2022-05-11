@@ -68,8 +68,9 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: teal;
-  color: white;
+  background-color: #ffc004;
+  color: black;
+  font-size: 15px;
 }
 
 .chatOnline {
