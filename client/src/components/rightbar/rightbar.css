@@ -1,5 +1,8 @@
 .rightbar {
-  flex: 3.5;
+  flex: 3;
+  background-color: #fffcf4;
+  /* position: relative;
+  margin-top: 50px; */
 }
 
 .rightbarWrapper {
@@ -75,21 +78,26 @@
   flex-direction: column;
   margin-bottom: 20px;
   cursor: pointer;
+  margin-right: 5px;
 }
 
 .rightbarFollowingImg{
   width: 100px;
   height: 100px;
   object-fit: cover;
-  border-radius: 100px;
+  border-radius: 5px;
+  /* border-radius: 100px;
   margin-left: 100px;
-  margin-right: 100px;
+  margin-right: 100px; */
   
 }
 .rightbarFollowingName{
-  border-radius: 100px;
+  /* border-radius: 100px;
   margin-left: 135px;
-  margin-right: 100px;
+  margin-right: 100px; */
+  margin-top: 5px;
+  text-align: center;
+  color: black;
 }
 
 
@@ -97,7 +105,7 @@
   margin-top: 30px;
   margin-bottom: 10px;
   border: none;
-  background-color: #1872f2;
+  background-color: #990001;
   color: white;
   border-radius: 5px;
   padding: 5px 10px;
@@ -113,11 +121,11 @@
 }
 
 .rightbarEditButton{
-  width: 45%;
+  width: 180px;
   margin-top: 30px;
   margin-bottom: 10px;
   border: none;
-  background-color: #1872f2;
+  background-color: #990001;
   color: white;
   border-radius: 5px;
   padding: 5px 10px;
@@ -138,11 +146,16 @@
 }
 
 .formInfo {
-  
   display: flex;
   flex-direction: column;
   margin-bottom: 5px;
   cursor: pointer;
+}
+
+.profileInput {
+  outline-color:#990001;
+  /* border-color: red; */
+
 }
 
 .editButton{
@@ -150,9 +163,9 @@
   border: none;
   padding: 7px;
   border-radius: 5px;
-  background-color: rgb(59, 141, 59);
+  background-color: #ffc004;
   font-weight: 500;
   margin-left: 85%;
   cursor: pointer;
-  color: white;
+  color: black;
 }

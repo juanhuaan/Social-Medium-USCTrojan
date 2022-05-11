@@ -2,10 +2,10 @@ import axios from "axios";
 import { useContext, useRef, useState } from "react";
 import "./register.css";
 // import { useHistory } from "react-router";
-import { Link, Grid } from "@material-ui/core";
+import { Grid, withTheme } from "@material-ui/core";
 import { loginCall } from "../../apiCalls";
 import { AuthContext } from "../../context/AuthContext";
-
+import { Link } from "react-router-dom"
 
 export default function Register() {
   const form = useRef();
@@ -81,16 +81,19 @@ export default function Register() {
   };
 
   return (
-    <div className="login">
-      <div className="loginWrapper">
-        <div className="loginLeft">
-          <h3 className="loginLogo">Trojan Family</h3>
-          <span className="loginDesc">
-            Connect with current students and alumni on Trojan Family.
-          </span>
-        </div>
-        <div className="loginRight">
-          <form className="loginBox" onSubmit={(e) => {
+    <div className="register">
+      <div className="registerWrapper">
+        <header className="registerHeader">
+          <div className="sameline">
+            <span className="registerLogo1">USC</span>
+            <span className="registerLogo2">Trojan</span>
+          </div>
+          {/* <span className="registerDesc">
+            Connect with current students and alumni on USCTrojan.
+          </span> */}
+        </header>
+        <div className="registerBody">
+          <form className="registerBox" onSubmit={(e) => {
             e.preventDefault();
           }}
             ref={form}
@@ -99,20 +102,20 @@ export default function Register() {
               placeholder="Username"
               required
               ref={username}
-              className="loginInput"
+              className="registerInput"
             />
             <input
               placeholder="Email"
               required
               ref={email}
-              className="loginInput"
+              className="registerInput"
               type="email"
             />
             <input
               placeholder="Password"
               required
               ref={password}
-              className="loginInput"
+              className="registerInput"
               type="password"
               minLength="6"
             />
@@ -120,28 +123,29 @@ export default function Register() {
               placeholder="Password Again"
               required
               ref={passwordAgain}
-              className="loginInput"
+              className="registerInput"
               type="password"
             />
-            <button className="loginButton" onClick={() => {
+            <button className="registerButton" onClick={() => {
               console.log("Submit Form!")
               handleClick()
             }}>
-              Sign Up&Log in
+              Sign up & Log in
             </button>
 
-            <Grid
+            
+          </form>
+          <Grid
               container
               spacing={0}
               direction="column"
               alignItems="center"
               justifyContent="center"
             >
-              <Link href='/login'>
+              <Link to='/login' className="loginLink">
                 Log into Account
               </Link>
             </Grid>
-          </form>
         </div>
       </div>
     </div >

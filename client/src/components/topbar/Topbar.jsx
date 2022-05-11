@@ -87,7 +87,8 @@ export default function Topbar({ setSearchTag, setHomePage, setTimeLine, socket 
     <div className="topbarContainer">
       <div className="topbarLeft">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">Trojan Familly</span>
+          <span className="logo1">USC</span>
+          <span className="logo2">Trojan</span>
         </Link>
       </div>
       <div className="topbarCenter">

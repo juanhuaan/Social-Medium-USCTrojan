@@ -92,7 +92,7 @@ export default function Post({ post, setPosts, socket }) {
                     </div>
                     <div className="postTopRight">
                         {post.userId === currentUser._id &&
-                            <Button size="small" color="primary" onClick={deleteHandler}>
+                            <Button size="small" color="error" onClick={deleteHandler}>
                                 <DeleteIcon fontSize="small" /> &nbsp;  Delete
                             </Button>}
                     </div>
@@ -103,7 +103,7 @@ export default function Post({ post, setPosts, socket }) {
                 </div>
 
                 {(post.tags[0] !== "") && <div className="postSub">
-                    <Label htmlColor="#5C94CD" className="tagIcon" />
+                    <Label htmlColor= "#fee682" className="tagIcon" />
                     <span className="tagText"> {formatting(post?.tags)}</span>
                 </div>}
                 {/* <hr className="shareHr" /> */}
