@@ -80,3 +80,7 @@ MONGO_URL = mongodb+srv://ee547:XGhH1KuAj1c00ooB@cluster0.knprx.mongodb.net/EE54
 ```
 
 ```
+## Reference
+
+Youtube: https://www.youtube.com/playlist?list=PLj-4DlPRT48lXaz5YLvbLC38m25W9Kmqy
+Codebase: https://github.com/safak/youtube/tree/mern-social-app
